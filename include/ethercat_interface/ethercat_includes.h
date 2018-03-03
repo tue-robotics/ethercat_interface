@@ -14,5 +14,7 @@
 #include "ethercat_soem/ethercatconfig.h"
 #include "ethercat_soem/ethercatprint.h"
 
+#include "ethercat_interface/slave_driver.h"
+
 #endif
 

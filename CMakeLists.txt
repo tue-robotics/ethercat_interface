@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
+
+## Use C++ 11
+set (CMAKE_CXX_STANDARD 11)
+
 project(ethercat_interface)
 
 ## Find catkin and any catkin packages

@@ -3,7 +3,8 @@
 
 #include "ethercat_interface/ethercat_includes.h"
 
-class EL2008{
+class EL2008: public SlaveDriver
+{
 	private:
 	ec_slavet *ec_slave;
 public:
