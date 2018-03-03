@@ -32,6 +32,10 @@ int main(int argc, char** argv)
         exit(1);
     }
 
+    // Test output
+    std::shared_ptr<IOInterface> ao = interface.getInterface(2, 1);
+    ao->write(3.0);
+
     ROS_INFO("Starting loop");
     ros::Rate rate(1000.0);
     while (ros::ok())

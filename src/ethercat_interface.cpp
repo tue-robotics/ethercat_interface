@@ -125,6 +125,10 @@ bool EthercatInterface::constructDrivers()
     return true;
 }
 
+std::shared_ptr<IOInterface> EthercatInterface::getInterface(unsigned int slave, unsigned int channel){
+    return drivers_[slave]->getChannel(channel);
+}
+
 void EthercatInterface::sendAll()
 {
     if (pdo_transfer_active_)

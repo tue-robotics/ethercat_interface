@@ -19,6 +19,8 @@ public:
 
     // ToDo: statecheck
 
+    std::shared_ptr<IOInterface> getInterface(unsigned int slave, unsigned int channel);
+
     void sendAll();
 
     void receiveAll();
