@@ -1,8 +1,7 @@
 #include <ros/console.h>
-#include "ethercat_interface/exceptions.h"
-#include "ethercat_interface/ethercat_includes.h"
+#include "ethercat_interface/drivers.h"
 #include "ethercat_interface/ethercat_interface.h"
-
+#include "ethercat_interface/exceptions.h"
 
 EthercatInterface::EthercatInterface():
     pdo_transfer_active_(false),
@@ -75,7 +74,6 @@ bool EthercatInterface::initialize(const std::string &ifname)
     {
         ROS_INFO("Operational state reached for all slaves.");
         pdo_transfer_active_ = true;
-        return true;
     }
     else
     {
@@ -92,8 +90,39 @@ bool EthercatInterface::initialize(const std::string &ifname)
         }
     }
 
-    return false;
+    if (!constructDrivers())
+    {
+        return false;
+    }
 
+    return true;
+
+}
+
+bool EthercatInterface::constructDrivers()
+{
+    drivers_.resize(ec_slavecount);
+    for (unsigned int i = 1; i <= ec_slavecount; i++) // ToDo: make nice?
+    {
+        std::string name(ec_slave[i].name);
+        ROS_INFO("Driver %u: %s", i, name.c_str());
+        // ToDo: classloader/driverfactory/pluginglib implementation
+        if (name == "EK1100")
+        {
+//            ec_slavet *slave = &ec_slave[i];
+            drivers_[i] = std::make_shared<EK1100>(&ec_slave[i]);
+        }
+        else if (name == "EL4132")
+        {
+            drivers_[i] = std::make_shared<EL4132>(&ec_slave[i]);
+        }
+        else
+        {
+            ROS_WARN("No driver for %u: %s", i, name.c_str());
+        }
+
+    }
+    return true;
 }
 
 void EthercatInterface::sendAll()

@@ -1,9 +1,5 @@
 #include "ethercat_interface/el2008.h"
 
-EL2008::EL2008(ec_slavet *slave){
-	ec_slave = slave;
-}
-
 void EL2008::set_output(uint8_t output_nr, boolean do_enable){
 	if(do_enable){
 		ec_slave->outputs[0] |= (1<<output_nr);
