@@ -109,7 +109,8 @@ bool EthercatInterface::constructDrivers()
         // ToDo: classloader/driverfactory/pluginglib implementation
         if (name == "EK1100")
         {
-            drivers_[i] = std::make_shared<EK1100>();
+//            ec_slavet *slave = &ec_slave[i];
+            drivers_[i] = std::make_shared<EK1100>(&ec_slave[i]);
         }
         else
         {

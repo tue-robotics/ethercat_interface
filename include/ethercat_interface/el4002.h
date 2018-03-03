@@ -1,7 +1,7 @@
 #ifndef __EL4002_H
 #define __EL4002_H
 
-#include "ethercat_interface/ethercat_includes.h"
+#include "ethercat_interface/slave_driver.h"
 
 class EL4002: public SlaveDriver
 {
