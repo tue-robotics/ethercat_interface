@@ -112,6 +112,10 @@ bool EthercatInterface::constructDrivers()
 //            ec_slavet *slave = &ec_slave[i];
             drivers_[i] = std::make_shared<EK1100>(&ec_slave[i]);
         }
+        else if (name == "EL4132")
+        {
+            drivers_[i] = std::make_shared<EL4132>(&ec_slave[i]);
+        }
         else
         {
             ROS_WARN("No driver for %u: %s", i, name.c_str());

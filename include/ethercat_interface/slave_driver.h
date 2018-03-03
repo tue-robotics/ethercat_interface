@@ -12,7 +12,7 @@ public:
         ec_slave_ = slave;
     }
 
-private:
+protected:
     ec_slavet *ec_slave_;
 
 };

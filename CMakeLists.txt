@@ -16,7 +16,11 @@ catkin_package(CATKIN_DEPENDS)
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 # New and improved
-add_library(ethercat_interface src/ethercat_interface.cpp)
+add_library(ethercat_interface
+    src/ethercat_interface.cpp
+    src/el4xxx.cpp
+    src/io_interfaces.cpp
+    )
 target_link_libraries(ethercat_interface ${catkin_LIBRARIES})
 
 add_executable(ethercat_interface_node src/ethercat_interface_node.cpp)
