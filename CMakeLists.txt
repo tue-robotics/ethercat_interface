@@ -7,7 +7,9 @@ find_package(catkin REQUIRED COMPONENTS
   ethercat_soem)
 
 ## Declare a catkin package
-catkin_package(CATKIN_DEPENDS)
+catkin_package(CATKIN_DEPENDS roscpp ethercat_soem
+    INCLUDE_DIRS include
+    LIBRARIES ethercat_interface)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
