@@ -1,12 +1,12 @@
 #ifndef EK1100_H
 #define EK1100_H
 
-#include "ethercat_interface/slave_driver.h"
+#include "ethercat_interface/ethercat_driver.h"
 
-class EK1100: public SlaveDriver
+class EK1100: public EtherCatDriver
 {
 public:
-    using SlaveDriver::SlaveDriver;
+    using EtherCatDriver::EtherCatDriver;
 
 };
 

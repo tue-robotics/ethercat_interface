@@ -4,23 +4,17 @@
 #include <memory>
 #include <vector>
 #include "ethercat_interface/io_interfaces.h"
-#include "ethercat_interface/slave_driver.h"
+#include "ethercat_interface/ethercat_driver.h"
 
 
 // ToDo: use template
-class EL4xxx: public SlaveDriver
+class EL4xxx: public EtherCatDriver
 {
 public:
     EL4xxx(ec_slavet *slave, unsigned int nr_channels,
            unsigned int nr_bits, double min, double max);
 
-private:
-    // ToDo: generalize (don't hardcode this 2)
-    typedef struct PACKED
-    {
-        int16_t values[2];
-    } out_el4xxxt;
-
+    IOInterface &getChannel(unsigned int channel);
 };
 
 

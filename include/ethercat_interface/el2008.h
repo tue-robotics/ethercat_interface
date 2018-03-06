@@ -1,9 +1,9 @@
 #ifndef __EL2008_H
 #define __EL2008_H
 
-#include "ethercat_interface/slave_driver.h"
+#include "ethercat_interface/ethercat_driver.h"
 
-class EL2008: public SlaveDriver
+class EL2008: public EtherCatDriver
 {
 
 public:

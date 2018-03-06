@@ -36,8 +36,12 @@ int main(int argc, char** argv)
     double value = -2.0;
     std::shared_ptr<IOInterface> ao0 = interface.getInterface(1, 0);
     ao0->write(value);
-    std::shared_ptr<IOInterface> ao1 = interface.getInterface(1, 1);
-    ao1->write(2.0 * value);
+//    std::shared_ptr<IOInterface> ao1 = interface.getInterface(1, 1);
+//    ao1->write(2.0 * value);
+
+//    EtherCatDriver ao_driver = interface.getSlave(1);
+////    IOInterface ao1 = ao_driver.getChannel(1);
+//    IOInterface ao1 = ao_driver.getChannel(1);
 
     ROS_INFO("Starting loop");
     ros::Rate rate(1000.0);
@@ -51,7 +55,7 @@ int main(int argc, char** argv)
         {
             value *= -1.0;
             ao0->write(value);
-            ao1->write(2.0 * value);
+//            ao1->write(2.0 * value);
             count = 0;
         }
 

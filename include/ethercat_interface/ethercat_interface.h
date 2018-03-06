@@ -2,7 +2,7 @@
 #define ETHERCAT_INTERFACE_H
 
 #include <memory>
-#include "ethercat_interface/slave_driver.h"
+#include "ethercat_interface/ethercat_driver.h"
 
 class EthercatInterface
 {
@@ -22,7 +22,7 @@ public:
     // ToDo: deprecate
     std::shared_ptr<IOInterface> getInterface(unsigned int slave, unsigned int channel);
 
-    SlaveDriver& getSlave(unsigned int slave);
+    EtherCatDriver& getSlave(unsigned int slave);
 
     void sendAll();
 
@@ -34,7 +34,7 @@ private:
 
 private:
 
-    std::vector<std::shared_ptr<SlaveDriver> > drivers_;
+    std::vector<std::shared_ptr<EtherCatDriver> > drivers_;
     bool pdo_transfer_active_;
     volatile int wkc_, expected_wkc_;  // ToDo: correct usage of volatile?
     char IOmap_[4096];

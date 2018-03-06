@@ -1,9 +1,9 @@
 #ifndef __EL5002_H
 #define __EL5002_H
 
-#include "ethercat_interface/slave_driver.h"
+#include "ethercat_interface/ethercat_driver.h"
 
-class EL5002: public SlaveDriver
+class EL5002: public EtherCatDriver
 {
   private:
   ec_slavet *ec_slave;

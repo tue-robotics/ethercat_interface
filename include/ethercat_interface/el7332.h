@@ -1,9 +1,9 @@
 #ifndef __EL7332_H
 #define __EL7332_H
 
-#include "ethercat_interface/slave_driver.h"
+#include "ethercat_interface/ethercat_driver.h"
 
-class EL7332: public SlaveDriver
+class EL7332: public EtherCatDriver
 {
 	private:
 	ec_slavet *ec_slave;

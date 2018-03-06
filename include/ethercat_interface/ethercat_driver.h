@@ -6,11 +6,11 @@
 #include "ethercat_interface/ethercat_includes.h"
 #include "ethercat_interface/io_interfaces.h"
 
-class SlaveDriver
+class EtherCatDriver
 {
 
 public:
-    SlaveDriver(ec_slavet *slave)
+    EtherCatDriver(ec_slavet *slave)
     {
         ec_slave_ = slave;
     }

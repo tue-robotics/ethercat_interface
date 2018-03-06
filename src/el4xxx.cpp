@@ -4,7 +4,7 @@
 #include <ros/console.h>
 
 EL4xxx::EL4xxx(ec_slavet *slave, unsigned int nr_channels,
-               unsigned int nr_bits, double min, double max) : SlaveDriver(slave)
+               unsigned int nr_bits, double min, double max) : EtherCatDriver(slave)
 {
     ROS_INFO("Constructing EL4xxx");
     channels_.resize(nr_channels);
@@ -28,6 +28,13 @@ EL4xxx::EL4xxx(ec_slavet *slave, unsigned int nr_channels,
     }
     ROS_INFO("Output objects constructed");
 
+}
+
+IOInterface& EL4xxx::getChannel(unsigned int channel)
+{
+//    IOInterface* channel_ptr = channels_[channel].get();
+//    return *()
+    return *channels_[channel].get();
 }
 
 EL4132::EL4132(ec_slavet *slave) :

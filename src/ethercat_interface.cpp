@@ -133,6 +133,11 @@ std::shared_ptr<IOInterface> EthercatInterface::getInterface(unsigned int slave,
     return drivers_[slave]->getChannel(channel);
 }
 
+EtherCatDriver& EthercatInterface::getSlave(unsigned int slave)
+{
+    return *drivers_[slave].get();
+}
+
 void EthercatInterface::sendAll()
 {
     if (pdo_transfer_active_)
