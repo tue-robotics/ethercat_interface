@@ -33,15 +33,31 @@ int main(int argc, char** argv)
     }
 
     // Test output
-    std::shared_ptr<IOInterface> ao = interface.getInterface(2, 1);
-    ao->write(3.0);
+    double value = -2.0;
+    std::shared_ptr<IOInterface> ao0 = interface.getInterface(1, 0);
+    ao0->write(value);
+    std::shared_ptr<IOInterface> ao1 = interface.getInterface(1, 1);
+    ao1->write(2.0 * value);
 
     ROS_INFO("Starting loop");
     ros::Rate rate(1000.0);
+    int count = 0;
     while (ros::ok())
     {
         interface.receiveAll();
+
+        count += 1;
+        if (count == 1000)
+        {
+            value *= -1.0;
+            ao0->write(value);
+            ao1->write(2.0 * value);
+            count = 0;
+        }
+
         interface.sendAll();
+
+
         rate.sleep();
     }
 

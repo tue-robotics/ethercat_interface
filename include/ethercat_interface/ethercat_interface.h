@@ -19,7 +19,10 @@ public:
 
     // ToDo: statecheck
 
+    // ToDo: deprecate
     std::shared_ptr<IOInterface> getInterface(unsigned int slave, unsigned int channel);
+
+    SlaveDriver& getSlave(unsigned int slave);
 
     void sendAll();
 

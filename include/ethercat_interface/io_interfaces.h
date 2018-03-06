@@ -1,6 +1,8 @@
 #ifndef IO_INTERFACES_H
 #define IO_INTERFACES_H
 
+#include "ethercat_interface/ethercat_includes.h"
+
 class IOInterface
 {
 
@@ -12,7 +14,7 @@ public:
 class AO: public IOInterface
 {
 public:
-    AO(unsigned int nr_bits, double min, double max);
+    AO(int16_t *data_ptr, unsigned int nr_bits, double min, double max);
 
     bool write(double value);
 
@@ -20,6 +22,9 @@ public:
 
 private:
 
+    // ToDo 1: is int16_t the right data type
+    // ToDo 2: can we move this data_ptr_ to the base class?
+    int16_t* data_ptr_;
     unsigned int nr_bits_;
     double min_, max_;
 };
