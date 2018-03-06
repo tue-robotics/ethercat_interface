@@ -25,12 +25,16 @@ include_directories(
   ${soem_INCLUDE_DIRS}/soem
 )
 
+# find all headers for qtcreator
+file(GLOB HEADERS include/ethercat_interface/*.h src/*.h)
+
 # New and improved
 add_library(ethercat_interface
+    ${HEADERS}
     src/ethercat_interface.cpp
     src/el4xxx.cpp
     src/io_interfaces.cpp
-    )
+)
 target_link_libraries(ethercat_interface ${catkin_LIBRARIES})
 
 add_executable(ethercat_interface_node src/ethercat_interface_node.cpp)
