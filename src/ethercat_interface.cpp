@@ -26,7 +26,8 @@ EthercatInterface::~EthercatInterface()
 bool EthercatInterface::initialize(const std::string &ifname)
 {
     // Initialise SOEM, bind socket to ifname
-    if (!ec_init(ifname.c_str()))
+    // Use const_cast here because we have an old c interface
+    if (!ec_init(const_cast<char*>(ifname.c_str())))
     {
         throw socketerror;
     }
