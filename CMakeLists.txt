@@ -8,14 +8,22 @@ project(ethercat_interface)
 ## Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  ethercat_soem)
+  soem
+  hardware_interface
+  controller_manager)
 
 ## Declare a catkin package
-catkin_package(CATKIN_DEPENDS roscpp ethercat_soem
-    INCLUDE_DIRS include
-    LIBRARIES ethercat_interface)
+catkin_package()
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ## The following work around allows SOEM headers to include other SOEM headers.
+  ## SOEM headers assume all headers are installed in a flat directory structure
+  ## See https://github.com/smits/soem/issues/4 for more information.
+  ## Thanks: https://github.com/ros-industrial/robotiq/blob/a2a77e73370c522fa9865f7a797408ef7831026e/robotiq_ethercat/CMakeLists.txt#L15
+  ${soem_INCLUDE_DIRS}/soem
+)
 
 # New and improved
 add_library(ethercat_interface

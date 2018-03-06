@@ -17,6 +17,8 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>roscpp</depend>
-  <depend>ethercat_soem</depend>
+  <depend>soem</depend>
+  <depend>hardware_interface</depend>
+  <depend>controller_manager</depend>
 
 </package>
