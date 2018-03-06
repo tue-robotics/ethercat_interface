@@ -110,15 +110,15 @@ bool EthercatInterface::constructDrivers()
         // ToDo: classloader/driverfactory/pluginglib implementation
         if (name == "EK1100")
         {
-//            ec_slavet *slave = &ec_slave[i];
             drivers_[i-1] = std::make_shared<EK1100>(&ec_slave[i]);
         }
         else if (name == "EL4132")
         {
-            ROS_INFO("Creating EL4132 driver");
-//            std::make_shared<EL4132>(&ec_slave[i]);
             drivers_[i-1] = std::make_shared<EL4132>(&ec_slave[i]);
-            ROS_INFO("Created EL4132 driver");
+        }
+        else if (name == "EL5101")
+        {
+            drivers_[i-1] = std::make_shared<EL5101>(&ec_slave[i]);
         }
         else
         {
@@ -142,9 +142,8 @@ void EthercatInterface::sendAll()
 {
     if (pdo_transfer_active_)
     {
-        ec_slavet* slave = &ec_slave[2];
-        int16_t *value = (int16_t *)&(slave->outputs[0]);
-//        printf("sendall address: %p, value: %i\n", ec_slave[2].outputs, *value);
+//        ec_slavet* slave = &ec_slave[2];
+//        int16_t *value = (int16_t *)&(slave->outputs[0]);
         ec_send_processdata();
     }
 

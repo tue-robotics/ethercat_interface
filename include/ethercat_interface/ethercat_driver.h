@@ -1,5 +1,5 @@
-#ifndef SLAVE_DRIVER_H
-#define SLAVE_DRIVER_H
+#ifndef ETHERCAT_DRIVER_H
+#define ETHERCAT_DRIVER_H
 
 #include <memory>
 #include <vector>
@@ -27,4 +27,4 @@ protected:
 
 };
 
-#endif // SLAVE_DRIVER_H
+#endif // ETHERCAT_DRIVER_H

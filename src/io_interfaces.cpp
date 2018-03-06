@@ -30,3 +30,12 @@ double AO::read()
 {
 
 }
+
+Encoder::Encoder(uint16_t *data_ptr) : data_ptr_(data_ptr){}
+
+unsigned int Encoder::read()
+{
+    printf("Encoder read not implemented");
+    return 0.0;
+//    return ((in_el5101t*) (ec_slave_->inputs))->invalue;  // Orocos SOEM
+}

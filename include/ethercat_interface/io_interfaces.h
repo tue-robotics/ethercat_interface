@@ -29,6 +29,19 @@ private:
     double min_, max_;
 };
 
+class Encoder: public IOInterface
+{
+public:
+    Encoder(uint16_t *data_ptr);
+
+    unsigned int read();
+    bool write(double value){};
+
+private:
+    uint16_t* data_ptr_;
+//    return ((in_el5101t*) (m_datap->inputs))->invalue;
+}; // End of class Encoder
+
 #endif // IO_INTERFACES_H
 
 //int16_t EL4002::volt2dac(double value){
