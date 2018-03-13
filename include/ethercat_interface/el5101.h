@@ -4,6 +4,9 @@
 #include "ethercat_interface/ethercat_driver.h"
 #include "ethercat_interface/io_interfaces.h"
 
+/**
+ * @brief The EL5101 class driver for Beckhoff encoder slaves
+ */
 class EL5101: public EtherCatDriver
 {
 public:

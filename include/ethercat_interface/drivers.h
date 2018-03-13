@@ -1,7 +1,6 @@
 #ifndef DRIVERS_H
 #define DRIVERS_H
 
-#include "ethercat_interface/ethercat_driver.h"
 #include "ethercat_interface/ek1100.h"
 #include "ethercat_interface/el2008.h"
 #include "ethercat_interface/el2502.h"

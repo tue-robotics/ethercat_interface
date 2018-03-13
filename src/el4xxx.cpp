@@ -1,44 +1,27 @@
 #include "ethercat_interface/el4xxx.h"
 
-// ToDo: remove
-#include <ros/console.h>
-
 EL4xxx::EL4xxx(ec_slavet *slave, unsigned int nr_channels,
                unsigned int nr_bits, double min, double max) : EtherCatDriver(slave)
 {
-    ROS_INFO("Constructing EL4xxx");
+    ROS_INFO("Constructing EL4xxx with %u channels, %u bits, range [%.2f, %.2f]",
+             nr_channels, nr_bits, min, max);
     channels_.resize(nr_channels);
-    // ToDo: make nice
-//    for (auto& it : channels_)
-//    {
-//        int16_t *setpoint = (int16_t *)&(ec_slave->outputs[2*output_nr])
-//        it = std::make_shared<AO>(nr_bits, min, max);
-//    }
 
-    ROS_INFO("Constructing output objects");
+    ROS_DEBUG("EL4xxx: Constructing output objects");
     for (unsigned int output_nr = 0; output_nr < nr_channels; output_nr++)
     {
-        ROS_INFO("Getting data ptr");
+        ROS_DEBUG("EL4xxx: Getting data ptr %u", output_nr);
         // 16 bit int vs 8 bit char
         int16_t *data_ptr = (int16_t *)&(slave->outputs[2* output_nr]);
-        printf("EL4XXX: %p\n", (void*)data_ptr);
-//        *data_ptr = (int16_t) 0x3FFF;
-        ROS_INFO("Constructing AO object");
+
+        ROS_DEBUG("EL4xxx: Constructing AO object %u", output_nr);
         channels_[output_nr] = std::make_shared<AO>(data_ptr, nr_bits, min, max);
     }
-    ROS_INFO("Output objects constructed");
+    ROS_DEBUG("Output objects constructed");
 
 }
 
 IOInterface& EL4xxx::getChannel(unsigned int channel)
 {
-//    IOInterface* channel_ptr = channels_[channel].get();
-//    return *()
     return *channels_[channel].get();
-}
-
-EL4132::EL4132(ec_slavet *slave) :
-    EL4xxx(slave, 2, 16, -10.0, 10.0)
-{
-    ROS_INFO("EL4132 constructor");
 }
