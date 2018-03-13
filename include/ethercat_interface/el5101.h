@@ -11,6 +11,8 @@ public:
 
     std::shared_ptr<Encoder> &getChannel(unsigned int channel);
 
+    void tempUpdate();
+
 private:
     std::shared_ptr<Encoder> encoder_;
 

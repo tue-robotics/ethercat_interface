@@ -50,13 +50,14 @@ int main(int argc, char** argv)
     ROS_INFO("Starting loop");
     ros::Rate rate(1000.0);
     int count = 0;
-//    while (ros::ok())
-    while (count < 10)
+    while (ros::ok())
+//    while (count < 10)
     {
         interface.receiveAll();
 
 //        ROS_INFO("Reading encoder");
         ROS_INFO("Encoder: %i", encoder->read());
+        interface.getSlave(2).tempUpdate();
 //        encoder->read();
 //        ROS_INFO("Read encoder");
 

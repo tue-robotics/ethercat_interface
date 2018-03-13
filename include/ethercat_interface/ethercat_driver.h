@@ -20,6 +20,8 @@ public:
         return channels_[channel];
     }
 
+    virtual void tempUpdate(){}
+
 protected:
     ec_slavet *ec_slave_;
 
