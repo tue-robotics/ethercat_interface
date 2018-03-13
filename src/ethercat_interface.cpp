@@ -110,14 +110,17 @@ bool EthercatInterface::constructDrivers()
         // ToDo: classloader/driverfactory/pluginglib implementation
         if (name == "EK1100")
         {
+            ROS_INFO("Constructing EK1100 for i %i", i);
             drivers_[i-1] = std::make_shared<EK1100>(&ec_slave[i]);
         }
         else if (name == "EL4132")
         {
+            ROS_INFO("Constructing EL4132 for i %i", i);
             drivers_[i-1] = std::make_shared<EL4132>(&ec_slave[i]);
         }
         else if (name == "EL5101")
         {
+            ROS_INFO("Constructing EL5101 for i %i", i);
             drivers_[i-1] = std::make_shared<EL5101>(&ec_slave[i]);
         }
         else
@@ -130,6 +133,7 @@ bool EthercatInterface::constructDrivers()
 }
 
 std::shared_ptr<IOInterface> EthercatInterface::getInterface(unsigned int slave, unsigned int channel){
+    ROS_INFO("drivers_[%i]->getChannel(%i). There are %i drivers_", slave, channel, (int)drivers_.size());
     return drivers_[slave]->getChannel(channel);
 }
 

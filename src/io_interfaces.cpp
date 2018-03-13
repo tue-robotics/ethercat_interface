@@ -26,7 +26,7 @@ bool AO::write(double value)
     //  std::cout << "setpoint = volt2dac = " << volt2dac(value) << std::endl;
 }
 
-double AO::read()
+unsigned int AO::read()
 {
 
 }
@@ -36,6 +36,6 @@ Encoder::Encoder(uint16_t *data_ptr) : data_ptr_(data_ptr){}
 unsigned int Encoder::read()
 {
     printf("Encoder read not implemented");
-    return 0.0;
+    return 123;
 //    return ((in_el5101t*) (ec_slave_->inputs))->invalue;  // Orocos SOEM
 }
