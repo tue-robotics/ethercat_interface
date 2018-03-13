@@ -21,7 +21,6 @@ private:
       uint16 period;
       uint16 window;
     } in_el5101t;
-
 };
 
 #endif // EL5101_H

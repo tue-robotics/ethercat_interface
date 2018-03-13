@@ -26,14 +26,17 @@ bool AO::write(double value)
     //  std::cout << "setpoint = volt2dac = " << volt2dac(value) << std::endl;
 }
 
-unsigned int AO::read()
+int AO::read()
 {
 
 }
 
-Encoder::Encoder(uint16_t *data_ptr) : data_ptr_(data_ptr){}
+Encoder::Encoder(uint16_t *data_ptr) : data_ptr_(data_ptr)
+{
 
-unsigned int Encoder::read()
+}
+
+int Encoder::read()
 {
     return *data_ptr_;
 }

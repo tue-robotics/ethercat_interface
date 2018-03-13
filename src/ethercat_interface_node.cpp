@@ -35,6 +35,7 @@ int main(int argc, char** argv)
     // Test output
     double value = -2.0;
     std::shared_ptr<IOInterface> ao0 = interface.getInterface(1, 0);
+// TODO: if an interface does not exist, raise an exception instead of segfaulting
     ao0->write(value);
 //    std::shared_ptr<IOInterface> ao1 = interface.getInterface(1, 1);
 //    ao1->write(2.0 * value);

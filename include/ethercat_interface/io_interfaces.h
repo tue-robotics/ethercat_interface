@@ -9,7 +9,7 @@ class IOInterface
 public:
 //    template <typename T>
     virtual bool write(double value) = 0; // ToDo: template this
-    virtual unsigned int read() = 0; // ToDo: template this
+    virtual int read() = 0; // ToDo: template this
 };
 
 class AO: public IOInterface
@@ -19,7 +19,7 @@ public:
 
     bool write(double value);
 
-    unsigned int read();
+    int read();
 
 private:
 
@@ -36,7 +36,7 @@ public:
     Encoder(uint16_t *data_ptr);
 
     bool write(double value) {}
-    unsigned int read();
+    int read();
 
 private:
     uint16_t* data_ptr_;
