@@ -1,0 +1,23 @@
+@startuml
+
+EthercatInterface "1" *-- "many" EtherCatDriver : contains
+
+EthercatInterface:initialize(const std::string& ifname)
+EthercatInterface:getInterface(slave, channel)
+EthercatInterface:getSlave(slave)
+EthercatInterface:sendAll()
+EthercatInterface:receiveAll()
+EthercatInterface:constructDrivers()
+
+EtherCatDriver ^-- EL5101 : extends
+
+EtherCatDriver "1" *--  "many" IOinterface
+EtherCatDriver : getChannel(channel)
+
+IOinterface : read()
+IOinterface : write()
+
+IOinterface ^-- Encoder : extends
+IOinterface ^-- AOinterface : extends
+
+@enduml
