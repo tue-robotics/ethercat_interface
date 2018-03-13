@@ -40,6 +40,11 @@ public:
 
 private:
     uint16_t* data_ptr_;
+
+    uint16_t previous_value;  //Value of this Encoder at the previous read action
+    int revolution_overflows = 0; // How many times has the encoder encountered a full revolution
+    int encoder_max = UINT16_MAX; // The largest value this encoder can report before wrapping around and to a full revolution
+
 //    return ((in_el5101t*) (m_datap->inputs))->invalue;
 }; // End of class Encoder
 

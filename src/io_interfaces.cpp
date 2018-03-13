@@ -33,10 +33,26 @@ int AO::read()
 
 Encoder::Encoder(uint16_t *data_ptr) : data_ptr_(data_ptr)
 {
-
+    previous_value = *data_ptr;
 }
 
 int Encoder::read()
 {
-    return *data_ptr_;
+    uint16_t new_value = *data_ptr_;
+
+    if( (previous_value - new_value) > encoder_max/2)
+    {
+        std::cout << "Wrap ++" << std::endl;
+        revolution_overflows++;
+    }
+    else if ((previous_value - new_value) < -1 * (double)encoder_max/2)
+    {
+        std::cout << "Wrap --" << std::endl;
+        revolution_overflows--;
+    }
+
+    previous_value = new_value;
+    int position = revolution_overflows * encoder_max+new_value;
+
+    return position;
 }
