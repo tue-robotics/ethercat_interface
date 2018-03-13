@@ -35,8 +35,5 @@ Encoder::Encoder(uint16_t *data_ptr) : data_ptr_(data_ptr){}
 
 unsigned int Encoder::read()
 {
-//    return 123;
-//    return ((in_el5101t*) (ec_slave_->inputs))->invalue;  // Orocos SOEM
-    std::cout << "data_ptr_: "<< data_ptr_ << " *data_ptr: " << *data_ptr_<< std::endl;
     return *data_ptr_;
 }

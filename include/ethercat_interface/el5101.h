@@ -9,10 +9,6 @@ class EL5101: public EtherCatDriver
 public:
     EL5101(ec_slavet *slave);
 
-    std::shared_ptr<Encoder> &getChannel(unsigned int channel);
-
-    void tempUpdate();
-
 private:
     std::shared_ptr<Encoder> encoder_;
 

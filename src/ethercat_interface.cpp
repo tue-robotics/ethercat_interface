@@ -133,7 +133,6 @@ bool EthercatInterface::constructDrivers()
 }
 
 std::shared_ptr<IOInterface> EthercatInterface::getInterface(unsigned int slave, unsigned int channel){
-    ROS_INFO("drivers_[%i]->getChannel(%i). There are %i drivers_", slave, channel, (int)drivers_.size());
     return drivers_[slave]->getChannel(channel);
 }
 

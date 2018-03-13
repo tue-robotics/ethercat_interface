@@ -51,15 +51,10 @@ int main(int argc, char** argv)
     ros::Rate rate(1000.0);
     int count = 0;
     while (ros::ok())
-//    while (count < 10)
     {
         interface.receiveAll();
 
-//        ROS_INFO("Reading encoder");
         ROS_INFO("Encoder: %i", encoder->read());
-        interface.getSlave(2).tempUpdate();
-//        encoder->read();
-//        ROS_INFO("Read encoder");
 
         count += 1;
         if (count == 1000)
