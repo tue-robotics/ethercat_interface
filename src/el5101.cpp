@@ -1,4 +1,4 @@
-#include "ethercat_interface/el5101.h"
+#include "./el5101.h"
 
 EL5101::EL5101(ec_slavet *slave) : EtherCatDriver(slave)
 {

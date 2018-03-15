@@ -1,5 +1,5 @@
 #include <ros/console.h>
-#include "ethercat_interface/drivers.h"
+#include "./drivers.h"
 #include "ethercat_interface/ethercat_interface.h"
 #include "ethercat_interface/exceptions.h"
 
