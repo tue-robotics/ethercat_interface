@@ -3,6 +3,9 @@
 
 #include "ethercat_interface/ethercat_includes.h"
 
+/**
+ * @brief The IOInterface class Base class for IO interfaces
+ */
 class IOInterface
 {
 
@@ -12,13 +15,29 @@ public:
     virtual int read() = 0; // ToDo: template this
 };
 
+/**
+ * @brief The AO class Interface for Analog Outputs
+ */
 class AO: public IOInterface
 {
 public:
+    /**
+     * @brief AO Constructor
+     * @param data_ptr pointer to the location where the data should be written
+     * @param nr_bits number of bits used for conversion
+     * @param min minimum output value (before conversion from double)
+     * @param max maximum output value (before conversion from double)
+     */
     AO(int16_t *data_ptr, unsigned int nr_bits, double min, double max);
 
+    /**
+     * @brief write Writes the value in the EtherCAT memory before it is send over the EtherCAT bus
+     * @param value value to write
+     * @return bool indicating success
+     */
     bool write(double value);
 
+    // ToDo
     int read();
 
 private:

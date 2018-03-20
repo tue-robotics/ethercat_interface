@@ -10,6 +10,11 @@
 class EL5101: public EtherCatDriver
 {
 public:
+
+    /**
+     * @brief EL5101 Constructor
+     * @param slave pointer to the slave location
+     */
     EL5101(ec_slavet *slave);
 
 private:
