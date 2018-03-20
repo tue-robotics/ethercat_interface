@@ -13,7 +13,7 @@ public:
 //    template <typename T>
     virtual bool write(double value) = 0; // ToDo: template this
     virtual int read() = 0; // ToDo: template this
-};
+}; // End of class IOInterface
 
 /**
  * @brief The AO class Interface for Analog Outputs
@@ -47,14 +47,28 @@ private:
     int16_t* data_ptr_;
     unsigned int nr_bits_;
     double min_, max_;
-};
+}; // End of class AO
 
+/**
+ * @brief The Encoder class Encoder interface
+ */
 class Encoder: public IOInterface
 {
 public:
+
+    /**
+     * @brief Encoder Constructor. Handles overflow, assuming raw data is a 16-bit unsigned integer
+     * @param data_ptr pointer to the location where the data should be written
+     */
     Encoder(uint16_t *data_ptr);
 
+    // ToDo: remove
     bool write(double value) {}
+
+    /**
+     * @brief read reads the encoder value, keeps track of overflow and converts to an int
+     * @return the current encoder position (in counts)
+     */
     int read();
 
 private:
@@ -64,36 +78,6 @@ private:
     int revolution_overflows_ = 0; // How many times has the encoder encountered a full revolution
     int encoder_max_ = UINT16_MAX; // The largest value this encoder can report before wrapping around and to a full revolution
 
-//    return ((in_el5101t*) (m_datap->inputs))->invalue;
 }; // End of class Encoder
 
 #endif // IO_INTERFACES_H
-
-//int16_t EL4002::volt2dac(double value){
-//  // 10V = 32767 2^15-1
-//  //  0V = 16 = 2^4
-
-//  //convert voltage setpoint to 16 bits dac value, Last one and first three bits not used
-//  int16_t dac_setpoint = value*(1<<15)/10;
-
-//  return dac_setpoint;
-//}
-
-//double EL4002::dac2volt(int16_t dac_value){
-//  //convert 16 bits dac value to voltage
-//  double voltage = dac_value; //TODO
-//  return voltage;
-//}
-
-//void EL4002::set_output(uint8_t output_nr, double value){
-//  //2 bytes per output
-//  int16_t *setpoint = (int16_t *)&(ec_slave->outputs[2*output_nr]);
-//  *setpoint = (int16_t) volt2dac(value);
-//  std::cout << "setpoint = volt2dac = " << volt2dac(value) << std::endl;
-
-//  std::cout << (int16_t) ec_slave->outputs[0] << " - "  << (int16_t) ec_slave->outputs[1] << " - "  << (int16_t) ec_slave->outputs[2] << " - "  << (int16_t) ec_slave->outputs[3] << std::endl;
-//}
-
-//double EL4002::get_output(uint8_t output_nr){
-//  return dac2volt(ec_slave->outputs[0] & (1<<output_nr));
-//}
