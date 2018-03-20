@@ -28,26 +28,29 @@ int AO::read()
 
 Encoder::Encoder(uint16_t *data_ptr) : data_ptr_(data_ptr)
 {
-    previous_value = *data_ptr;
+    previous_value_ = *data_ptr;
 }
 
 int Encoder::read()
 {
     uint16_t new_value = *data_ptr_;
 
-    if( (previous_value - new_value) > encoder_max/2)
+    ROS_DEBUG_THROTTLE(1.0, "Encoder read value: %u", new_value);
+    if( (previous_value_ - new_value) > encoder_max_ / 2)
     {
-        std::cout << "Wrap ++" << std::endl;
-        revolution_overflows++;
+        revolution_overflows_++;
+        ROS_DEBUG_THROTTLE(1.0, "Incrementing overflow to %i", revolution_overflows_);
     }
-    else if ((previous_value - new_value) < -1 * (double)encoder_max/2)
+    else if ((previous_value_ - new_value) < -1 * (double)encoder_max_/2)
     {
-        std::cout << "Wrap --" << std::endl;
-        revolution_overflows--;
+        revolution_overflows_--;
+        ROS_DEBUG_THROTTLE(1.0, "Decrementing overflow to %i", revolution_overflows_);
     }
 
-    previous_value = new_value;
-    int position = revolution_overflows * encoder_max+new_value;
+    previous_value_ = new_value;
+
+    int position = revolution_overflows_ * encoder_max_ + new_value;
+    ROS_DEBUG_THROTTLE(1.0, "Encoder output: %i", position);
 
     return position;
 }

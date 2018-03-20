@@ -5,7 +5,7 @@
 int main(int argc, char** argv)
 {
     // Init rosnode
-    ros::init(argc, argv, "ethercat_interface_node");
+    ros::init(argc, argv, "test_ao_node");
 
     // Get interface name, slave index and parameter index from the parameter server
     std::string ifname;
