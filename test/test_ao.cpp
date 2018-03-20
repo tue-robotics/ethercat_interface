@@ -4,17 +4,19 @@
 
 int main(int argc, char** argv)
 {
+    // Init rosnode
     ros::init(argc, argv, "ethercat_interface_node");
 
-    // ToDo: add command line arguments for slave and channel indices
-    unsigned int slave_idx = 1;
-    unsigned int channel_idx = 0;
-
-    ros::NodeHandle nh("~");
-
+    // Get interface name, slave index and parameter index from the parameter server
     std::string ifname;
+    int slave_idx = 1;
+    int channel_idx = 0;
+    ros::NodeHandle nh("~");
     nh.param<std::string>("ifname", ifname, "eth0");
+    nh.param<int>("slave", slave_idx, 1);
+    nh.param<int>("channel", channel_idx, 0);
 
+    // Construct and initalize the interface
     ROS_INFO("Constructing EtherCAT Interface");
     EthercatInterface interface;
 
