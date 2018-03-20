@@ -40,5 +40,11 @@ add_library(ethercat_interface
 )
 target_link_libraries(ethercat_interface ${catkin_LIBRARIES})
 
+# Test executables
 add_executable(ethercat_interface_node src/ethercat_interface_node.cpp)
 target_link_libraries(ethercat_interface_node ethercat_interface ${catkin_LIBRARIES})
+
+add_executable(test_ao test/test_ao.cpp)
+target_link_libraries(test_ao ethercat_interface ${catkin_LIBRARIES})
+
+
