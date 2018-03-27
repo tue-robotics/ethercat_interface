@@ -13,7 +13,7 @@ public:
 //    template <typename T>
     virtual bool write(double value) = 0; // ToDo: template this
     virtual int read() = 0; // ToDo: template this
-}; // End of class IOInterface
+};
 
 /**
  * @brief The AO class Interface for Analog Outputs

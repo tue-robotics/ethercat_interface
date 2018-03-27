@@ -36,6 +36,7 @@ add_library(ethercat_interface
     src/ethercat_interface.cpp
     src/el4xxx.cpp
     src/el5101.cpp
+    src/tuees030.cpp
     src/io_interfaces.cpp
 )
 target_link_libraries(ethercat_interface ${catkin_LIBRARIES})
