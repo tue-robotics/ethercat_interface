@@ -32,7 +32,8 @@ file(GLOB HEADERS include/ethercat_interface/*.h src/*.h)
 
 # IO Interfaces
 add_library(io_interfaces
-    src/analog_output.cpp
+#    src/analog_input.cpp
+#    src/analog_output.cpp
     src/encoder.cpp
     src/io_interfaces.cpp
     src/read_interface.cpp
