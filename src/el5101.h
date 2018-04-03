@@ -18,7 +18,7 @@ public:
     EL5101(ec_slavet *slave);
 
 private:
-    std::shared_ptr<Encoder> encoder_;
+    std::shared_ptr<Encoder<uint16> > encoder_;
 
     typedef struct PACKED
     {
