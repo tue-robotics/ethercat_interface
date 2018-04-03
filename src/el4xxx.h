@@ -3,9 +3,9 @@
 
 #include <memory>
 #include <vector>
-#include "ethercat_interface/io_interfaces.h"
+#include "ethercat_interface/analog_output.h"
 #include "ethercat_interface/ethercat_driver.h"
-
+#include "ethercat_interface/write_interface.h"
 
 /**
  * @brief The EL4xxx class base class for drivers for Beckhoff Analog outputs
@@ -40,7 +40,7 @@ public:
      * @param channel represents the channel
      * @return reference to this channel
      */
-    IOInterface &getChannel(unsigned int channel);
+    WriteInterface &getOutput(unsigned int channel);
 
 };  // End of class EL4xxx
 

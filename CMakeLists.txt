@@ -30,6 +30,15 @@ include_directories(
 # find all headers for qtcreator
 file(GLOB HEADERS include/ethercat_interface/*.h src/*.h)
 
+# IO Interfaces
+add_library(io_interfaces
+    src/analog_output.cpp
+    src/encoder.cpp
+    src/io_interfaces.cpp
+    src/read_interface.cpp
+    src/write_interface.cpp
+)
+
 # New and improved
 add_library(ethercat_interface
     ${HEADERS}
@@ -37,9 +46,8 @@ add_library(ethercat_interface
     src/el4xxx.cpp
     src/el5101.cpp
     src/tuees030.cpp
-    src/io_interfaces.cpp
 )
-target_link_libraries(ethercat_interface ${catkin_LIBRARIES})
+target_link_libraries(ethercat_interface io_interfaces ${catkin_LIBRARIES})
 
 # #### Test executables ####
 # Ethercat interface node

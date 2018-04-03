@@ -3,7 +3,7 @@
 TUeES030::TUeES030(ec_slavet *slave) : EtherCatDriver(slave)
 {
     // ToDo: resize to correct number of channels!
-    channels_.resize(50);
+    inputs_.resize(50);
 
     // Input channels
     in_tueEthercatMemoryt* input_struct_ptr = (in_tueEthercatMemoryt*)(ec_slave_->inputs);

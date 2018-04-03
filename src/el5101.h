@@ -2,7 +2,7 @@
 #define EL5101_H
 
 #include "ethercat_interface/ethercat_driver.h"
-#include "ethercat_interface/io_interfaces.h"
+#include "encoder.h"
 
 /**
  * @brief The EL5101 class driver for Beckhoff encoder slaves

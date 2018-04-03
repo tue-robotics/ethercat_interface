@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 
     // Test output
     double value = -2.0;
-    std::shared_ptr<IOInterface> ao = interface.getInterface(slave_idx, channel_idx);
+    std::shared_ptr<WriteInterface> ao = interface.getSlave(slave_idx).getOutput(channel_idx);
     ao->write(value);
 
     ROS_INFO("Starting loop");

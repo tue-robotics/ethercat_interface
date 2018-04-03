@@ -5,7 +5,8 @@
 #include <ros/console.h>
 #include <vector>
 #include "ethercat_interface/ethercat_includes.h"
-#include "ethercat_interface/io_interfaces.h"
+#include "ethercat_interface/read_interface.h"
+#include "ethercat_interface/write_interface.h"
 
 /**
  * @brief The EtherCatDriver class provides a base class for EtherCAT drivers
@@ -29,16 +30,27 @@ public:
      * @param channel represents the channel index
      * @return shared pointer to IOInterface
      */
-    std::shared_ptr<IOInterface> getChannel(unsigned int channel)
+    std::shared_ptr<ReadInterface> getInput(unsigned int channel)
     {
-        return channels_[channel];
+        return inputs_[channel];
+    }
+
+    /**
+     * @brief getChannel Returns an IO interface to one of the channels
+     * @param channel represents the channel index
+     * @return shared pointer to IOInterface
+     */
+    std::shared_ptr<WriteInterface> getOutput(unsigned int channel)
+    {
+        return outputs_[channel];
     }
 
 protected:
 
     ec_slavet *ec_slave_;
 
-    std::vector<std::shared_ptr<IOInterface> > channels_;
+    std::vector<std::shared_ptr<ReadInterface> > inputs_;
+    std::vector<std::shared_ptr<WriteInterface> > outputs_;
 
 };
 

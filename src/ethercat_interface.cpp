@@ -132,9 +132,9 @@ bool EthercatInterface::constructDrivers()
     return true;
 }
 
-std::shared_ptr<IOInterface> EthercatInterface::getInterface(unsigned int slave, unsigned int channel){
-    return drivers_[slave]->getChannel(channel);
-}
+//std::shared_ptr<IOInterface> EthercatInterface::getInterface(unsigned int slave, unsigned int channel){
+//    return drivers_[slave]->getInput(channel);
+//}
 
 EtherCatDriver& EthercatInterface::getSlave(unsigned int slave)
 {
