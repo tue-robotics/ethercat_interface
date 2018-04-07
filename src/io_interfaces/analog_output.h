@@ -6,13 +6,15 @@
 
 template <typename T>
 /**
- * @brief The AO class Interface for Analog Outputs
+ * @brief The AnalogOutput class Interface for Analog Outputs
  */
 class AnalogOutput: public WriteInterface
 {
 public:
     /**
-     * @brief AO Constructor
+     * @brief AnalogOutput Constructor
+     * @param name of this interface. This is convenient to indicate the
+     * physical connection which this interface represents
      * @param data_ptr pointer to the location where the data should be written
      * @param nr_bits number of bits used for conversion
      * @param min minimum output value (before conversion from double)
@@ -40,12 +42,11 @@ public:
 
 private:
 
-    // ToDo 1: is int16_t the right data type
-    // ToDo 2: can we move this data_ptr_ to the base class?
     T* data_ptr_;
     size_t nr_bits_;
     T offset_;
     double min_, max_;
+
 };  // End of class AO
 
 #endif // ANALOG_OUTPUT_H

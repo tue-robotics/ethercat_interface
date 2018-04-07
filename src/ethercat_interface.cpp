@@ -143,18 +143,12 @@ bool EthercatInterface::constructDrivers()
         // Print driver info
         if (drivers_.find(i-1) != drivers_.end())
         {
-//            std::string msg = drivers_[i-1]->getStringRep();
-            ROS_INFO_STREAM(*drivers_[i-1]);
-//            std::cout << "Driver: " << *drivers_[i-1] << std::endl;
+            ROS_DEBUG_STREAM(*drivers_[i-1]);
         }
 
     }
     return true;
 }
-
-//std::shared_ptr<IOInterface> EthercatInterface::getInterface(unsigned int slave, unsigned int channel){
-//    return drivers_[slave]->getInput(channel);
-//}
 
 EtherCatDriver& EthercatInterface::getSlave(unsigned int slave)
 {

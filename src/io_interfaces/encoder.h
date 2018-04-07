@@ -15,13 +15,15 @@ public:
 
     /**
      * @brief Encoder Constructor. Handles overflow, assuming raw data is a 16-bit unsigned integer
+     * @param name of this interface. This is convenient to indicate the
+     * physical connection which this interface represents
      * @param data_ptr pointer to the location where the data should be written
      */
     Encoder(std::string name, T *data_ptr) : data_ptr_(data_ptr), ReadInterface(name)
     {
         previous_value_ = *data_ptr;
         encoder_max_ = std::numeric_limits<T>::max();
-        std::cout << "Encoder max: " << encoder_max_ << std::endl;
+        ROS_DEBUG_STREAM("Encoder max: " << encoder_max_);
     }
 
     /**
@@ -60,6 +62,6 @@ private:
     int revolution_overflows_ = 0; // How many times has the encoder encountered a full revolution
     T encoder_max_ = 0; // The largest value this encoder can report before wrapping around and to a full revolution
 
-}; // End of class Encoder
+};  // End of class Encoder
 
 #endif // ENCODER_H

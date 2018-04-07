@@ -32,21 +32,14 @@ public:
      * @param channel represents the channel index
      * @return shared pointer to a ReadInterface
      */
-    std::shared_ptr<ReadInterface> getInput(unsigned int channel)
-    {
-        ROS_INFO("Getting input on channel %d of inputs size %d", (int) channel, (int) inputs_.size());
-        return inputs_[channel];
-    }
+    std::shared_ptr<ReadInterface> getInput(unsigned int channel);
 
     /**
      * @brief getChannel Returns a WriteInterface to one of the channels
      * @param channel represents the channel index
      * @return shared pointer to the WriteInterface
      */
-    std::shared_ptr<WriteInterface> getOutput(unsigned int channel)
-    {
-        return outputs_[channel];
-    }
+    std::shared_ptr<WriteInterface> getOutput(unsigned int channel);
 
     friend std::ostream &operator<<(std::ostream&, const EtherCatDriver&);
 
