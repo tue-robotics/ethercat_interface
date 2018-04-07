@@ -16,7 +16,7 @@ public:
      * @param min minimum output value (before conversion from double)
      * @param max maximum output value (before conversion from double)
      */
-    AO(int16_t *data_ptr, unsigned int nr_bits, double min, double max);
+    AO(std::string name, int16_t *data_ptr, unsigned int nr_bits, double min, double max);
 
     /**
      * @brief write Writes the value in the EtherCAT memory before it is send over the EtherCAT bus

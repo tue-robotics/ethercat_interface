@@ -7,26 +7,26 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
     // Input channels
     in_tueEthercatMemoryt* input_struct_ptr = (in_tueEthercatMemoryt*)(ec_slave_->inputs);
     // ToDo: mstate1 [0]
-    inputs_[1] = std::make_shared<Encoder<uint32> >(&input_struct_ptr->encoder_1);
-    inputs_[2] = std::make_shared<AnalogInput<int16> >(&input_struct_ptr->current_1);
+    inputs_[1] = std::make_shared<Encoder<uint32> >("Encoder1", &input_struct_ptr->encoder_1);
+    inputs_[2] = std::make_shared<AnalogInput<int16> >("Current1", &input_struct_ptr->current_1);
     // ToDo: mstate2 [3]
-    inputs_[4] = std::make_shared<Encoder<uint32> >(&input_struct_ptr->encoder_2);
-    inputs_[5] = std::make_shared<AnalogInput<int16> >(&input_struct_ptr->current_2);
+    inputs_[4] = std::make_shared<Encoder<uint32> >("Encoder2", &input_struct_ptr->encoder_2);
+    inputs_[5] = std::make_shared<AnalogInput<int16> >("Current2", &input_struct_ptr->current_2);
     // ToDo: mstate3 [6]
-    inputs_[7] = std::make_shared<Encoder<uint32> >(&input_struct_ptr->encoder_3);
-    inputs_[8] = std::make_shared<AnalogInput<int16> >(&input_struct_ptr->current_3);
+    inputs_[7] = std::make_shared<Encoder<uint32> >("Encoder3", &input_struct_ptr->encoder_3);
+    inputs_[8] = std::make_shared<AnalogInput<int16> >("Current3", &input_struct_ptr->current_3);
     //    digital_in_t digital_in;                    // digital input 8 bits [10, 11, 12, 13, 14, 15, 16, 17]
     //    uint16      calipher_1;			// calipher 1 (1 bit = 0.01 mm) [18]
     //    uint16      calipher_2;			// calipher 2 (1 bit = 0.01 mm) [19]
-    inputs_[20] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_1);
-    inputs_[21] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_2);
-    inputs_[22] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_3);
-    inputs_[23] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->position_1);
-    inputs_[24] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->position_2);
-    inputs_[25] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->position_3);
-    inputs_[26] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->spare_ai_1);
-    inputs_[27] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->spare_ai_2);
-    inputs_[28] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->linevoltage);
+    inputs_[20] = std::make_shared<AnalogInput<uint16> >("Force1", &input_struct_ptr->force_1);
+    inputs_[21] = std::make_shared<AnalogInput<uint16> >("Force2", &input_struct_ptr->force_2);
+    inputs_[22] = std::make_shared<AnalogInput<uint16> >("Force3", &input_struct_ptr->force_3);
+    inputs_[23] = std::make_shared<AnalogInput<uint16> >("Pos1", &input_struct_ptr->position_1);
+    inputs_[24] = std::make_shared<AnalogInput<uint16> >("Pos2", &input_struct_ptr->position_2);
+    inputs_[25] = std::make_shared<AnalogInput<uint16> >("Pos3", &input_struct_ptr->position_3);
+    inputs_[26] = std::make_shared<AnalogInput<uint16> >("SpareAI1", &input_struct_ptr->spare_ai_1);
+    inputs_[27] = std::make_shared<AnalogInput<uint16> >("SpareAI2", &input_struct_ptr->spare_ai_2);
+    inputs_[28] = std::make_shared<AnalogInput<uint16> >("Linevoltage", &input_struct_ptr->linevoltage);
 
 //    uint8       mstate1;			// motor state 1
 //    uint32      encoder_1;			// Encoder 1

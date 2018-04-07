@@ -14,8 +14,8 @@ EL4xxx::EL4xxx(std::string name, ec_slavet *slave, unsigned int nr_channels,
         int16_t *data_ptr = (int16_t *)&(slave->outputs[2* output_nr]);
 
         ROS_DEBUG("EL4xxx: Constructing AO object %u", output_nr);
-//        outputs_[output_nr] = std::shared_ptr<WriteInterface>(new AO(data_ptr, nr_bits, min, max));//std::make_shared<AO>(data_ptr, nr_bits, min, max);
-        outputs_[output_nr] = std::make_shared<AO>(data_ptr, nr_bits, min, max);
+        std::string channel_name = "Analog output " + std::to_string(output_nr);
+        outputs_[output_nr] = std::make_shared<AO>(channel_name, data_ptr, nr_bits, min, max);
     }
     ROS_DEBUG("Output objects constructed");
 
