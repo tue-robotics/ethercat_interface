@@ -57,7 +57,7 @@ private:
 
     T previous_value_;  //Value of this Encoder at the previous read action
     int revolution_overflows_ = 0; // How many times has the encoder encountered a full revolution
-    int encoder_max_ = 0; // The largest value this encoder can report before wrapping around and to a full revolution
+    T encoder_max_ = 0; // The largest value this encoder can report before wrapping around and to a full revolution
 
 }; // End of class Encoder
 
