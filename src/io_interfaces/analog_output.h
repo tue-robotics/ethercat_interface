@@ -46,6 +46,6 @@ private:
     size_t nr_bits_;
     T offset_;
     double min_, max_;
-}; // End of class AO
+};  // End of class AO
 
 #endif // ANALOG_OUTPUT_H

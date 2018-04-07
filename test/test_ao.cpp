@@ -7,6 +7,12 @@ int main(int argc, char** argv)
     // Init rosnode
     ros::init(argc, argv, "test_ao_node");
 
+    // Configure logging
+    if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) )
+    {
+       ros::console::notifyLoggerLevelsChanged();
+    }
+
     // Get interface name, slave index and parameter index from the parameter server
     std::string ifname;
     int slave_idx = 1;

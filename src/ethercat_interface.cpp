@@ -1,7 +1,10 @@
 #include <ros/console.h>
-#include "./drivers.h"
+
 #include "ethercat_interface/ethercat_interface.h"
 #include "ethercat_interface/exceptions.h"
+
+#include "./drivers/drivers.h"
+
 
 EthercatInterface::EthercatInterface():
     pdo_transfer_active_(false),

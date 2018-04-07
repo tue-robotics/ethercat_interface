@@ -34,25 +34,31 @@ file(GLOB HEADERS include/ethercat_interface/*.h src/*.h)
 add_library(io_interfaces
 #    src/analog_input.cpp
 #    src/analog_output.cpp
-    src/io_interfaces.cpp
-    src/read_interface.cpp
-    src/write_interface.cpp
+    src/io_interfaces/io_interfaces.cpp
+    src/io_interfaces/read_interface.cpp
+    src/io_interfaces/write_interface.cpp
 )
+
+# New and improved
+add_library(ethercat_drivers
+    ${HEADERS}
+    src/drivers/ethercat_driver.cpp
+    src/drivers/el4xxx.cpp
+    src/drivers/el5101.cpp
+    src/drivers/tuees030.cpp
+)
+target_link_libraries(ethercat_drivers io_interfaces ${catkin_LIBRARIES})
 
 # New and improved
 add_library(ethercat_interface
     ${HEADERS}
-    src/ethercat_driver.cpp
     src/ethercat_interface.cpp
-    src/el4xxx.cpp
-    src/el5101.cpp
-    src/tuees030.cpp
 )
-target_link_libraries(ethercat_interface io_interfaces ${catkin_LIBRARIES})
+target_link_libraries(ethercat_interface ethercat_drivers io_interfaces ${catkin_LIBRARIES})
 
 # #### Test executables ####
 # Ethercat interface node
-add_executable(ethercat_interface_node src/ethercat_interface_node.cpp)
+add_executable(ethercat_interface_node test/ethercat_interface_node.cpp)
 target_link_libraries(ethercat_interface_node ethercat_interface ${catkin_LIBRARIES})
 
 # Test AO

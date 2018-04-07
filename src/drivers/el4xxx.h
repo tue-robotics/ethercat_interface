@@ -3,9 +3,11 @@
 
 #include <memory>
 #include <vector>
-#include "ethercat_interface/analog_output.h"
+
 #include "ethercat_interface/ethercat_driver.h"
 #include "ethercat_interface/write_interface.h"
+
+#include "../io_interfaces/analog_output.h"
 
 /**
  * @brief The EL4xxx class base class for drivers for Beckhoff Analog outputs

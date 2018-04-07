@@ -1,8 +1,8 @@
 #include "ethercat_interface/ethercat_includes.h"
 #include "./tuees030.h"
-#include "analog_input.h"
-#include "ethercat_interface/analog_output.h"
-#include "encoder.h"
+#include "../io_interfaces/analog_input.h"
+#include "../io_interfaces/analog_output.h"
+#include "../io_interfaces/encoder.h"
 
 TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, slave)
 {
