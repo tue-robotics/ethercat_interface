@@ -13,9 +13,10 @@ public:
 
     /**
      * @brief EL5101 Constructor
+     * @param name name of this slave
      * @param slave pointer to the slave location
      */
-    EL5101(ec_slavet *slave);
+    EL5101(std::string name, ec_slavet *slave);
 
 private:
     std::shared_ptr<Encoder<uint16> > encoder_;

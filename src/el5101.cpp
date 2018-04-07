@@ -1,6 +1,6 @@
 #include "./el5101.h"
 
-EL5101::EL5101(ec_slavet *slave) : EtherCatDriver(slave)
+EL5101::EL5101(std::string name, ec_slavet *slave) : EtherCatDriver(name, slave)
 {
     in_el5101t* input_struct_ptr = (in_el5101t*)(ec_slave_->inputs);
     uint16_t* data_ptr = &input_struct_ptr->invalue;

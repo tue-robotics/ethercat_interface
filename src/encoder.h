@@ -17,7 +17,7 @@ public:
      * @brief Encoder Constructor. Handles overflow, assuming raw data is a 16-bit unsigned integer
      * @param data_ptr pointer to the location where the data should be written
      */
-    Encoder(T *data_ptr) : data_ptr_(data_ptr)
+    Encoder(T *data_ptr) : data_ptr_(data_ptr), ReadInterface("Encoder")
     {
         previous_value_ = *data_ptr;
         encoder_max_ = std::numeric_limits<T>::max();

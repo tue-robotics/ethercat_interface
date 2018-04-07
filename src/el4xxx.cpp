@@ -1,7 +1,7 @@
 #include "./el4xxx.h"
 
-EL4xxx::EL4xxx(ec_slavet *slave, unsigned int nr_channels,
-               unsigned int nr_bits, double min, double max) : EtherCatDriver(slave)
+EL4xxx::EL4xxx(std::string name, ec_slavet *slave, unsigned int nr_channels,
+               unsigned int nr_bits, double min, double max) : EtherCatDriver(name, slave)
 {
     ROS_INFO("Constructing EL4xxx with %u channels, %u bits, range [%.2f, %.2f]",
              nr_channels, nr_bits, min, max);

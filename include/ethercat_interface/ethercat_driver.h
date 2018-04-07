@@ -20,8 +20,9 @@ public:
      * @brief EtherCatDriver Constructor
      * @param slave pointer to the slave location
      */
-    EtherCatDriver(ec_slavet *slave)
+    EtherCatDriver(std::string name, ec_slavet *slave)
     {
+        name_ = name;
         ec_slave_ = slave;
     }
 
@@ -46,9 +47,12 @@ public:
         return outputs_[channel];
     }
 
+    std::string getStringRep();
+
 protected:
 
     ec_slavet *ec_slave_;
+    std::string name_;
 
     std::map<size_t, std::shared_ptr<ReadInterface> > inputs_;
     std::map<size_t, std::shared_ptr<WriteInterface> > outputs_;

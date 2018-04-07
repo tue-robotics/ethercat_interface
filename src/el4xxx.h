@@ -26,13 +26,14 @@ public:
 
     /**
      * @brief EL4xxx Constructor
+     * @param name name of this slave
      * @param slave memory location of the internal struct
      * @param nr_channels nr of analog output channels
      * @param nr_bits size of the integers
      * @param min minimum output value
      * @param max maximum output value
      */
-    EL4xxx(ec_slavet *slave, unsigned int nr_channels,
+    EL4xxx(std::string name, ec_slavet *slave, unsigned int nr_channels,
            unsigned int nr_bits, double min, double max);
 
     /**
@@ -51,8 +52,8 @@ public:
 class EL4132: public EL4xxx
 {
 public:
-    EL4132(ec_slavet *slave) :
-        EL4xxx(slave, 2, 16, -10.0, 10.0){}
+    EL4132(std::string name, ec_slavet *slave) :
+        EL4xxx(name, slave, 2, 16, -10.0, 10.0){}
 };  // End of class EL4132
 
 

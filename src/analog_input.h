@@ -13,7 +13,7 @@ public:
      * @brief AnalogInput Constructor.
      * @param data_ptr pointer to the location where the data should be written
      */
-    AnalogInput(T *data_ptr) : data_ptr_(data_ptr) {}
+    AnalogInput(T *data_ptr) : data_ptr_(data_ptr), ReadInterface("AnalogInput") {}
 
     /**
      * @brief read reads the analog input

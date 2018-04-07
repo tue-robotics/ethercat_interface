@@ -110,31 +110,38 @@ bool EthercatInterface::constructDrivers()
         if (name == "EK1100")
         {
             ROS_INFO("Constructing EK1100 for i %i", i);
-            drivers_[i-1] = std::make_shared<EK1100>(&ec_slave[i]);
+            drivers_[i-1] = std::make_shared<EK1100>(name, &ec_slave[i]);
         }
         else if (name == "EL4132")
         {
             ROS_INFO("Constructing EL4132 for i %i", i);
-            drivers_[i-1] = std::make_shared<EL4132>(&ec_slave[i]);
+            drivers_[i-1] = std::make_shared<EL4132>(name, &ec_slave[i]);
         }
         else if (name == "EL5101")
         {
             ROS_INFO("Constructing EL5101 for i %i", i);
-            drivers_[i-1] = std::make_shared<EL5101>(&ec_slave[i]);
+            drivers_[i-1] = std::make_shared<EL5101>(name, &ec_slave[i]);
         }
         else if (name == "TUeEC010")
         {
             ROS_INFO("Constructing TUeEC010 for i %i", i);
-            drivers_[i-1] = std::make_shared<TUeEC010>(&ec_slave[i]);
+            drivers_[i-1] = std::make_shared<TUeEC010>(name, &ec_slave[i]);
         }
         else if (name == "TUeES030")
         {
             ROS_INFO("Constructing TUeES030 for i %i", i);
-            drivers_[i-1] = std::make_shared<TUeES030>(&ec_slave[i]);
+            drivers_[i-1] = std::make_shared<TUeES030>(name, &ec_slave[i]);
         }
         else
         {
             ROS_WARN("No driver for %u: %s", i, name.c_str());
+        }
+
+        // Print driver info
+        if (drivers_.find(i-1) != drivers_.end())
+        {
+            std::string msg = drivers_[i-1]->getStringRep();
+            ROS_INFO("%s", msg.c_str());
         }
 
     }

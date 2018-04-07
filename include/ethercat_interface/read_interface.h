@@ -1,13 +1,18 @@
 #ifndef READ_INTERFACE_H
 #define READ_INTERFACE_H
 
-#include "ethercat_interface/ethercat_includes.h"
 #include <memory>
 
+#include "io_interfaces.h"
+#include "ethercat_interface/ethercat_includes.h"
 
-class ReadInterface
+
+
+class ReadInterface : public IOInterface
 {
 public:
+
+    ReadInterface(std::string name) : IOInterface(name){}
 
     virtual double read() = 0;
 

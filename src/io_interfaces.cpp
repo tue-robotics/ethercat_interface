@@ -6,7 +6,7 @@
 
 
 AO::AO(int16_t *data_ptr, unsigned int nr_bits, double min, double max):
-    data_ptr_(data_ptr), nr_bits_(nr_bits), min_(min), max_(max)
+    data_ptr_(data_ptr), nr_bits_(nr_bits), min_(min), max_(max), WriteInterface("Analog output")
 {
 
 }

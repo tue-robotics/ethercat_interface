@@ -42,6 +42,7 @@ add_library(io_interfaces
 # New and improved
 add_library(ethercat_interface
     ${HEADERS}
+    src/ethercat_driver.cpp
     src/ethercat_interface.cpp
     src/el4xxx.cpp
     src/el5101.cpp

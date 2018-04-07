@@ -2,7 +2,7 @@
 #include "analog_input.h"
 #include "encoder.h"
 
-TUeES030::TUeES030(ec_slavet *slave) : EtherCatDriver(slave)
+TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, slave)
 {
     // Input channels
     in_tueEthercatMemoryt* input_struct_ptr = (in_tueEthercatMemoryt*)(ec_slave_->inputs);
