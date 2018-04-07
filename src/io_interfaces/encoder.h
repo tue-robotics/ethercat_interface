@@ -21,6 +21,7 @@ public:
     {
         previous_value_ = *data_ptr;
         encoder_max_ = std::numeric_limits<T>::max();
+        std::cout << "Encoder max: " << encoder_max_ << std::endl;
     }
 
     /**

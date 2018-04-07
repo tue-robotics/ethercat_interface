@@ -1,16 +1,21 @@
 #ifndef IO_INTERFACES_H
 #define IO_INTERFACES_H
 
-#include <memory>
 #include <ostream>
 
-#include "ethercat_interface/ethercat_includes.h"
-
-
+/**
+ * @brief The IOInterface class provides a base class for read- and write interfaces
+ */
 class IOInterface
 {
 
 public:
+
+    /**
+     * @brief IOInterface Constructor
+     * @param name of this interface. This is convenient to indicate the
+     * physical connection which this interface represents
+     */
     IOInterface(std::string name) : name_(name){}
 
     ~IOInterface(){}

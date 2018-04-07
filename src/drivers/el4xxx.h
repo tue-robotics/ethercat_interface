@@ -1,13 +1,8 @@
 #ifndef EL4XXX_H
 #define EL4XXX_H
 
-#include <memory>
-#include <vector>
-
 #include "ethercat_interface/ethercat_driver.h"
 #include "ethercat_interface/write_interface.h"
-
-#include "../io_interfaces/analog_output.h"
 
 /**
  * @brief The EL4xxx class base class for drivers for Beckhoff Analog outputs
@@ -37,13 +32,6 @@ public:
      */
     EL4xxx(std::string name, ec_slavet *slave, unsigned int nr_channels,
            unsigned int nr_bits, double min, double max);
-
-    /**
-     * @brief getChannel Returns a channel of this interface
-     * @param channel represents the channel
-     * @return reference to this channel
-     */
-    WriteInterface &getOutput(unsigned int channel);
 
 };  // End of class EL4xxx
 

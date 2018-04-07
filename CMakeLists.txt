@@ -28,7 +28,7 @@ include_directories(
 )
 
 # find all headers for qtcreator
-file(GLOB HEADERS include/ethercat_interface/*.h src/*.h)
+file(GLOB HEADERS include/ethercat_interface/*.h src/*.h src/io_interfaces/*.h src/drivers/*.h)
 
 # IO Interfaces
 add_library(io_interfaces

@@ -26,9 +26,6 @@ public:
 
     // ToDo: statecheck
 
-    // ToDo: deprecate
-//    std::shared_ptr<IOInterface> getInterface(unsigned int slave, unsigned int channel);
-
     /**
      * @brief getSlave Returns reference to a slave
      * @param slave: slave index

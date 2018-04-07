@@ -1,4 +1,5 @@
 #include "./el4xxx.h"
+#include "../io_interfaces/analog_output.h"
 
 EL4xxx::EL4xxx(std::string name, ec_slavet *slave, unsigned int nr_channels,
                unsigned int nr_bits, double min, double max) : EtherCatDriver(name, slave)

@@ -18,6 +18,7 @@ public:
 
     /**
      * @brief EtherCatDriver Constructor
+     * @param name: name of this driver.
      * @param slave pointer to the slave location
      */
     EtherCatDriver(std::string name, ec_slavet *slave)
@@ -27,9 +28,9 @@ public:
     }
 
     /**
-     * @brief getChannel Returns an IO interface to one of the channels
+     * @brief getChannel Returns a ReadInterface to one of the inputs
      * @param channel represents the channel index
-     * @return shared pointer to IOInterface
+     * @return shared pointer to a ReadInterface
      */
     std::shared_ptr<ReadInterface> getInput(unsigned int channel)
     {
@@ -38,9 +39,9 @@ public:
     }
 
     /**
-     * @brief getChannel Returns an IO interface to one of the channels
+     * @brief getChannel Returns a WriteInterface to one of the channels
      * @param channel represents the channel index
-     * @return shared pointer to IOInterface
+     * @return shared pointer to the WriteInterface
      */
     std::shared_ptr<WriteInterface> getOutput(unsigned int channel)
     {
