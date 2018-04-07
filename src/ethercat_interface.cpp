@@ -102,7 +102,6 @@ bool EthercatInterface::initialize(const std::string &ifname)
 
 bool EthercatInterface::constructDrivers()
 {
-    drivers_.resize(ec_slavecount);
     for (unsigned int i = 1; i <= ec_slavecount; i++) // ToDo: make nice?
     {
         std::string name(ec_slave[i].name);
@@ -123,6 +122,16 @@ bool EthercatInterface::constructDrivers()
             ROS_INFO("Constructing EL5101 for i %i", i);
             drivers_[i-1] = std::make_shared<EL5101>(&ec_slave[i]);
         }
+        else if (name == "TUeEC010")
+        {
+            ROS_INFO("Constructing TUeEC010 for i %i", i);
+            drivers_[i-1] = std::make_shared<TUeEC010>(&ec_slave[i]);
+        }
+        else if (name == "TUeES030")
+        {
+            ROS_INFO("Constructing TUeES030 for i %i", i);
+            drivers_[i-1] = std::make_shared<TUeES030>(&ec_slave[i]);
+        }
         else
         {
             ROS_WARN("No driver for %u: %s", i, name.c_str());
@@ -138,6 +147,13 @@ bool EthercatInterface::constructDrivers()
 
 EtherCatDriver& EthercatInterface::getSlave(unsigned int slave)
 {
+    ROS_INFO("Getting slave with index %d of slaves vector of size %d", (int) slave, (int) drivers_.size());
+
+    if (drivers_.find(slave) == drivers_.end())
+    {
+        throw std::runtime_error("Slave " + std::to_string(slave) + " not present in driver list");
+    }
+
     return *drivers_[slave].get();
 }
 

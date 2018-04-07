@@ -8,5 +8,7 @@
 #include "./el5002.h"
 #include "./el5101.h"
 #include "./el7332.h"
+#include "./tueec010.h"
+#include "./tuees030.h"
 
 #endif // DRIVERS_H

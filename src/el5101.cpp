@@ -6,5 +6,5 @@ EL5101::EL5101(ec_slavet *slave) : EtherCatDriver(slave)
     uint16_t* data_ptr = &input_struct_ptr->invalue;
     encoder_ = std::make_shared<Encoder<uint16> >(data_ptr);
 
-    inputs_.push_back(encoder_);
+    inputs_[0] = encoder_;
 }

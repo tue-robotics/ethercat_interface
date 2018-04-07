@@ -5,7 +5,6 @@ EL4xxx::EL4xxx(ec_slavet *slave, unsigned int nr_channels,
 {
     ROS_INFO("Constructing EL4xxx with %u channels, %u bits, range [%.2f, %.2f]",
              nr_channels, nr_bits, min, max);
-    outputs_.resize(nr_channels);
 
     ROS_DEBUG("EL4xxx: Constructing output objects");
     for (unsigned int output_nr = 0; output_nr < nr_channels; output_nr++)

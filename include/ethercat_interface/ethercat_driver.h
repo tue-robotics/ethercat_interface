@@ -32,6 +32,7 @@ public:
      */
     std::shared_ptr<ReadInterface> getInput(unsigned int channel)
     {
+        ROS_INFO("Getting input on channel %d of inputs size %d", (int) channel, (int) inputs_.size());
         return inputs_[channel];
     }
 
@@ -49,8 +50,8 @@ protected:
 
     ec_slavet *ec_slave_;
 
-    std::vector<std::shared_ptr<ReadInterface> > inputs_;
-    std::vector<std::shared_ptr<WriteInterface> > outputs_;
+    std::map<size_t, std::shared_ptr<ReadInterface> > inputs_;
+    std::map<size_t, std::shared_ptr<WriteInterface> > outputs_;
 
 };
 

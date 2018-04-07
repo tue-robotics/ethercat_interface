@@ -39,11 +39,7 @@ int main(int argc, char** argv)
 
     // Get encoder interface
     ROS_INFO("Getting encoder");
-//    std::shared_ptr<ReadInterface> encoder = interface.getInterface(2, 0);
-//    std::shared_ptr<ReadInterface> encoder = interface.getSlave(2)(2, 0);
-//    EtherCatDriver encoderdriver = interface.getSlave(2);
-//    std::shared_ptr<ReadInterface> encoder = encoderdriver.getInput(0);
-    std::shared_ptr<ReadInterface> encoder = interface.getSlave(2).getInput(0);
+    std::shared_ptr<ReadInterface> encoder = interface.getSlave(slave_idx).getInput(channel_idx);
     ROS_INFO("Got encoder");
 
     ROS_INFO("Starting loop");

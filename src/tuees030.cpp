@@ -4,9 +4,6 @@
 
 TUeES030::TUeES030(ec_slavet *slave) : EtherCatDriver(slave)
 {
-    // ToDo: resize to correct number of channels!
-    inputs_.resize(50);
-
     // Input channels
     in_tueEthercatMemoryt* input_struct_ptr = (in_tueEthercatMemoryt*)(ec_slave_->inputs);
     // ToDo: mstate1 [0]
@@ -21,12 +18,15 @@ TUeES030::TUeES030(ec_slavet *slave) : EtherCatDriver(slave)
     //    digital_in_t digital_in;                    // digital input 8 bits [10, 11, 12, 13, 14, 15, 16, 17]
     //    uint16      calipher_1;			// calipher 1 (1 bit = 0.01 mm) [18]
     //    uint16      calipher_2;			// calipher 2 (1 bit = 0.01 mm) [19]
-    inputs[20] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_1);
-    inputs[21] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_2);
-    inputs[22] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_3);
-
-
-
+    inputs_[20] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_1);
+    inputs_[21] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_2);
+    inputs_[22] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->force_3);
+    inputs_[23] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->position_1);
+    inputs_[24] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->position_2);
+    inputs_[25] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->position_3);
+    inputs_[26] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->spare_ai_1);
+    inputs_[27] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->spare_ai_2);
+    inputs_[28] = std::make_shared<AnalogInput<uint16> >(&input_struct_ptr->linevoltage);
 
 //    uint8       mstate1;			// motor state 1
 //    uint32      encoder_1;			// Encoder 1
