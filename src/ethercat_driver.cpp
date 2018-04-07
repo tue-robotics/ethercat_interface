@@ -1,26 +1,26 @@
 #include "ethercat_interface/ethercat_driver.h"
 
-std::string EtherCatDriver::getStringRep()
+std::ostream &operator<<(std::ostream& strm, const EtherCatDriver& obj)
 {
-    std::string result = name_;
+    strm << obj.name_;
 
-    if (!inputs_.empty())
+    if (!obj.inputs_.empty())
     {
-        result += "\nInputs:";
-        for (auto& kv : inputs_)
+        strm << "\nInputs:";
+        for (auto& kv : obj.inputs_)
         {
-            result += "\n\t" + std::to_string(kv.first) + ": " + kv.second->getStringRep();
+            strm << "\n\t" << std::to_string(kv.first) << ": " << *kv.second;
         }
     }
 
-    if (!outputs_.empty())
+    if (!obj.outputs_.empty())
     {
-        result += "\nOutputs:";
-        for (auto& kv : outputs_)
+        strm << "\nOutputs:";
+        for (auto& kv : obj.outputs_)
         {
-            result += "\n\t" + std::to_string(kv.first) + ": " + kv.second->getStringRep();
+            strm << "\n\t" << std::to_string(kv.first) << ": " << *kv.second;
         }
     }
 
-    return result;
+    return strm;
 }

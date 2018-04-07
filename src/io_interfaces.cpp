@@ -4,6 +4,11 @@
 #include "ethercat_interface/analog_output.h"
 #include "ethercat_interface/ethercat_includes.h"
 
+std::ostream &operator<<(std::ostream& strm, const IOInterface& obj)
+{
+    strm << obj.name_;
+    return strm;
+}
 
 AO::AO(std::string name, int16_t *data_ptr, unsigned int nr_bits, double min, double max):
     data_ptr_(data_ptr), nr_bits_(nr_bits), min_(min), max_(max), WriteInterface(name)

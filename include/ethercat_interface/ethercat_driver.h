@@ -47,7 +47,7 @@ public:
         return outputs_[channel];
     }
 
-    std::string getStringRep();
+    friend std::ostream &operator<<(std::ostream&, const EtherCatDriver&);
 
 protected:
 
