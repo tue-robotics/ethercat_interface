@@ -1,5 +1,7 @@
+#include "ethercat_interface/ethercat_includes.h"
 #include "./tuees030.h"
 #include "analog_input.h"
+#include "ethercat_interface/analog_output.h"
 #include "encoder.h"
 
 TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, slave)
@@ -58,6 +60,33 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
 //    uint16      time_stamp;
 
     // Output channels
+    out_tueEthercatMemoryt* output_struct_ptr = (out_tueEthercatMemoryt*)(ec_slave_->outputs);
+    // ToDo: mcom1 [0]
+    // ToDo: pwm_duty_motor_1 [1]
+    // ToDo: ff1; [2]
+    // ToDo: mcom2 [3]
+    // ToDo: pwm_duty_motor_2 [4]
+    // ToDo: ff2; [4]
+    // ToDo: mcom3 [5]
+    // ToDo: pwm_duty_motor_3 [6]
+    // ToDo: ff3; [7]
+    // ToDo: digital out [8, 9, 10, 11, 12, 13, 14, 15]
+    outputs_[16] = std::make_shared<AO<int16> >("AnalogOut1", &output_struct_ptr->analog_out_1, 12, 0.0, 10.0, -2048);
+    outputs_[17] = std::make_shared<AO<int16> >("AnalogOut2", &output_struct_ptr->analog_out_2, 12, 0.0, 10.0, -2048);
 
+//    uint8       mcom1;              // motor 1 command (0=braked, 1/3=controlled, 2=tristate)
+//    int16       pwm_duty_motor_1;   // current setpoint 1 (1 bit = 1 mA) 6A continiuous current
+//    int16       ff1;                // current feed forward 1 (1 bit = 1 mA)
+//    uint8       mcom2;              // motor 2 command (0=braked, 1/3=controlled, 2=tristate)
+//    int16       pwm_duty_motor_2;   // current setpoint 2 (1 bit = 1 mA) 3A continuous current
+//    int16       ff2;                // current feed forward 2 (1 bit = 1 mA)
+//    uint8       mcom3;              // motor 3 command (0=braked, 1/3=controlled, 2=tristate)
+//    int16       pwm_duty_motor_3;   // current setpoint 3 (1 bit = 1 mA) 3A continuous current
+//    int16       ff3;                // current feed forward 3 (1 bit = 1 mA)
+//    digital_out_t digital_out;      // digital output 8 bits
+//    int16       analog_out_1;       // analog output 1  (0V = -2048, 10V = 2047, 5V = 0 is no motion)
+//    int16       analog_out_2;       // analog output 2
+//    out_el6022t	out_el6022;	    // Data structure for RS485 communication
+//} out_tueEthercatMemoryt;
 
 }
