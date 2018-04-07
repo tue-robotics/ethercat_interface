@@ -71,8 +71,8 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
     // ToDo: pwm_duty_motor_3 [6]
     // ToDo: ff3; [7]
     // ToDo: digital out [8, 9, 10, 11, 12, 13, 14, 15]
-    outputs_[16] = std::make_shared<AO<int16> >("AnalogOut1", &output_struct_ptr->analog_out_1, 12, 0.0, 10.0, -2048);
-    outputs_[17] = std::make_shared<AO<int16> >("AnalogOut2", &output_struct_ptr->analog_out_2, 12, 0.0, 10.0, -2048);
+    outputs_[16] = std::make_shared<AnalogOutput<int16> >("AnalogOut1", &output_struct_ptr->analog_out_1, 12, 0.0, 10.0, -2048);
+    outputs_[17] = std::make_shared<AnalogOutput<int16> >("AnalogOut2", &output_struct_ptr->analog_out_2, 12, 0.0, 10.0, -2048);
 
 //    uint8       mcom1;              // motor 1 command (0=braked, 1/3=controlled, 2=tristate)
 //    int16       pwm_duty_motor_1;   // current setpoint 1 (1 bit = 1 mA) 6A continiuous current

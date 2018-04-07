@@ -8,7 +8,7 @@ template <typename T>
 /**
  * @brief The AO class Interface for Analog Outputs
  */
-class AO: public WriteInterface
+class AnalogOutput: public WriteInterface
 {
 public:
     /**
@@ -19,7 +19,7 @@ public:
      * @param max maximum output value (before conversion from double)
      * @param offset integer offset, used if 0 V does not correspond to 0 bits
      */
-    AO(std::string name, T *data_ptr, size_t nr_bits, double min, double max, T offset=0) :
+    AnalogOutput(std::string name, T *data_ptr, size_t nr_bits, double min, double max, T offset=0) :
         data_ptr_(data_ptr), nr_bits_(nr_bits), min_(min), max_(max), offset_(offset), WriteInterface(name)
     {}
 
