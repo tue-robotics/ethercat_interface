@@ -2,6 +2,7 @@
 #define DIGITAL_OUTPUT_H
 
 #include <ros/console.h>
+#include "ethercat_interface/ethercat_includes.h"
 #include "ethercat_interface/write_interface.h"
 
 /**
@@ -17,8 +18,8 @@ public:
      * physical connection which this interface represents
      * @param data_ptr pointer to the location where the data should be written
      */
-    DigitalOutput(std::string name, bool *data_ptr) :
-        data_ptr_(data_ptr), WriteInterface(name)
+    DigitalOutput(std::string name, uint8 *data_ptr, unsigned int position) :
+        data_ptr_(data_ptr), WriteInterface(name), position_(position)
     {}
 
     /**
@@ -26,19 +27,12 @@ public:
      * @param value value to write
      * @return bool indicating success
      */
-    bool write(double value)
-    {
-        // Convert double value to bool value
-        // ToDo: do we really also want to use doubles here as well???
-        bool bool_value = (bool)value;
-        ROS_DEBUG_THROTTLE(1.0, "Writing value %.2f to %d", value, bool_value);
-        *data_ptr_ = bool_value;
-        return true;
-    }
+    bool write(double value);
 
 private:
 
-    bool* data_ptr_;
+    uint8* data_ptr_;  // ToDo: replace by bitset?
+    unsigned int position_;
 
 };  // End of class DigitalOutput
 
