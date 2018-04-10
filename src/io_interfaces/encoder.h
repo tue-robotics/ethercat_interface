@@ -2,7 +2,6 @@
 #define ENCODER_H
 
 #include <limits>
-#include "ethercat_interface/ethercat_includes.h"
 #include "ethercat_interface/read_interface.h"
 
 /**

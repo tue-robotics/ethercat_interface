@@ -38,6 +38,7 @@ public:
         T dac_setpoint = value * (1 << nr_bits_) / (max_ - min_) + offset_;
         ROS_DEBUG_THROTTLE(1.0, "Writing value %.2f to %i", value, dac_setpoint);
         *data_ptr_ = (T) dac_setpoint;
+        return true;
     }
 
 private:

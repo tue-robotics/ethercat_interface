@@ -1,6 +1,8 @@
 #ifndef ANALOG_INPUT_H
 #define ANALOG_INPUT_H
 
+#include "ethercat_interface/read_interface.h"
+
 /**
  * @brief The Analog Input
  */
