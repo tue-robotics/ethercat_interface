@@ -5,7 +5,8 @@
 #include <ros/console.h>
 #include <vector>
 #include "ethercat_interface/ethercat_includes.h"
-#include "ethercat_interface/io_interfaces.h"
+#include "ethercat_interface/read_interface.h"
+#include "ethercat_interface/write_interface.h"
 
 /**
  * @brief The EtherCatDriver class provides a base class for EtherCAT drivers
@@ -17,28 +18,38 @@ public:
 
     /**
      * @brief EtherCatDriver Constructor
+     * @param name: name of this driver.
      * @param slave pointer to the slave location
      */
-    EtherCatDriver(ec_slavet *slave)
+    EtherCatDriver(std::string name, ec_slavet *slave)
     {
+        name_ = name;
         ec_slave_ = slave;
     }
 
     /**
-     * @brief getChannel Returns an IO interface to one of the channels
+     * @brief getChannel Returns a ReadInterface to one of the inputs
      * @param channel represents the channel index
-     * @return shared pointer to IOInterface
+     * @return shared pointer to a ReadInterface
      */
-    std::shared_ptr<IOInterface> getChannel(unsigned int channel)
-    {
-        return channels_[channel];
-    }
+    std::shared_ptr<ReadInterface> getInput(unsigned int channel);
+
+    /**
+     * @brief getChannel Returns a WriteInterface to one of the channels
+     * @param channel represents the channel index
+     * @return shared pointer to the WriteInterface
+     */
+    std::shared_ptr<WriteInterface> getOutput(unsigned int channel);
+
+    friend std::ostream &operator<<(std::ostream&, const EtherCatDriver&);
 
 protected:
 
     ec_slavet *ec_slave_;
+    std::string name_;
 
-    std::vector<std::shared_ptr<IOInterface> > channels_;
+    std::map<size_t, std::shared_ptr<ReadInterface> > inputs_;
+    std::map<size_t, std::shared_ptr<WriteInterface> > outputs_;
 
 };
 

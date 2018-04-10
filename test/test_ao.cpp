@@ -7,6 +7,12 @@ int main(int argc, char** argv)
     // Init rosnode
     ros::init(argc, argv, "test_ao_node");
 
+    // Configure logging
+    if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) )
+    {
+       ros::console::notifyLoggerLevelsChanged();
+    }
+
     // Get interface name, slave index and parameter index from the parameter server
     std::string ifname;
     int slave_idx = 1;
@@ -39,8 +45,8 @@ int main(int argc, char** argv)
     }
 
     // Test output
-    double value = -2.0;
-    std::shared_ptr<IOInterface> ao = interface.getInterface(slave_idx, channel_idx);
+    double value = 0.0;
+    std::shared_ptr<WriteInterface> ao = interface.getSlave(slave_idx).getOutput(channel_idx);
     ao->write(value);
 
     ROS_INFO("Starting loop");
@@ -53,10 +59,10 @@ int main(int argc, char** argv)
         count += 1;
         if (count == 2000)
         {
-            value += 0.5;
-            if (value > 2.01)
+            value += 2.0;
+            if (value > 4.01)
             {
-                value = -2.0;
+                value = 0.0;
             }
             ROS_INFO("Setting output of slave %u, channel %u to %.2f", slave_idx, channel_idx, value);
             ao->write(value);

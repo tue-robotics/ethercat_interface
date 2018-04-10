@@ -1,11 +1,8 @@
 #ifndef EL4XXX_H
 #define EL4XXX_H
 
-#include <memory>
-#include <vector>
-#include "ethercat_interface/io_interfaces.h"
 #include "ethercat_interface/ethercat_driver.h"
-
+#include "ethercat_interface/write_interface.h"
 
 /**
  * @brief The EL4xxx class base class for drivers for Beckhoff Analog outputs
@@ -26,21 +23,15 @@ public:
 
     /**
      * @brief EL4xxx Constructor
+     * @param name name of this slave
      * @param slave memory location of the internal struct
      * @param nr_channels nr of analog output channels
      * @param nr_bits size of the integers
      * @param min minimum output value
      * @param max maximum output value
      */
-    EL4xxx(ec_slavet *slave, unsigned int nr_channels,
+    EL4xxx(std::string name, ec_slavet *slave, unsigned int nr_channels,
            unsigned int nr_bits, double min, double max);
-
-    /**
-     * @brief getChannel Returns a channel of this interface
-     * @param channel represents the channel
-     * @return reference to this channel
-     */
-    IOInterface &getChannel(unsigned int channel);
 
 };  // End of class EL4xxx
 
@@ -51,8 +42,8 @@ public:
 class EL4132: public EL4xxx
 {
 public:
-    EL4132(ec_slavet *slave) :
-        EL4xxx(slave, 2, 16, -10.0, 10.0){}
+    EL4132(std::string name, ec_slavet *slave) :
+        EL4xxx(name, slave, 2, 16, -10.0, 10.0){}
 };  // End of class EL4132
 
 

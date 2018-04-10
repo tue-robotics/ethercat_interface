@@ -2,7 +2,7 @@
 #define EL5101_H
 
 #include "ethercat_interface/ethercat_driver.h"
-#include "ethercat_interface/io_interfaces.h"
+#include "../io_interfaces/encoder.h"
 
 /**
  * @brief The EL5101 class driver for Beckhoff encoder slaves
@@ -13,12 +13,13 @@ public:
 
     /**
      * @brief EL5101 Constructor
+     * @param name name of this slave
      * @param slave pointer to the slave location
      */
-    EL5101(ec_slavet *slave);
+    EL5101(std::string name, ec_slavet *slave);
 
 private:
-    std::shared_ptr<Encoder> encoder_;
+    std::shared_ptr<Encoder<uint16> > encoder_;
 
     typedef struct PACKED
     {

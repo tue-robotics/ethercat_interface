@@ -203,7 +203,7 @@ class TUeES030: public EtherCatDriver
 {
 public:
 
-    TUeES030(ec_slavet *slave);
+    TUeES030(std::string name, ec_slavet *slave);
 
 private:
 

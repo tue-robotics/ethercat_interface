@@ -7,6 +7,12 @@ int main(int argc, char** argv)
     // Init rosnode
     ros::init(argc, argv, "test_encoder_node");
 
+    // Configure logging
+    if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) )
+    {
+       ros::console::notifyLoggerLevelsChanged();
+    }
+
     // Get interface name, slave index and parameter index from the parameter server
     std::string ifname;
     int slave_idx = 1;
@@ -32,14 +38,14 @@ int main(int argc, char** argv)
     {
         ROS_ERROR("No socket connection on %s. Try excecuting the following "
                   "command: sudo setcap cap_net_raw+ep $(readlink $(catkin_find "
-                  "ethercat_interface ethercat_interface_node))\n",
+                  "ethercat_interface test_encoder))\n",
                   ifname.c_str());
         exit(1);
     }
 
     // Get encoder interface
     ROS_INFO("Getting encoder");
-    std::shared_ptr<IOInterface> encoder = interface.getInterface(2, 0);
+    std::shared_ptr<ReadInterface> encoder = interface.getSlave(slave_idx).getInput(channel_idx);
     ROS_INFO("Got encoder");
 
     ROS_INFO("Starting loop");
@@ -48,7 +54,7 @@ int main(int argc, char** argv)
     {
         interface.receiveAll();
 
-        ROS_INFO_THROTTLE(1.0, "Encoder: %i", encoder->read());
+        ROS_INFO_THROTTLE(1.0, "Encoder: %.2f", encoder->read());
 
         interface.sendAll();
 
