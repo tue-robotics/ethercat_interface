@@ -2,7 +2,6 @@
 #define EL4XXX_H
 
 #include "ethercat_interface/ethercat_driver.h"
-#include "ethercat_interface/write_interface.h"
 
 /**
  * @brief The EL4xxx class base class for drivers for Beckhoff Analog outputs
