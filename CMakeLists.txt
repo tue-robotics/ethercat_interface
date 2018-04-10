@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Declare a catkin package
 catkin_package(CATKIN_DEPENDS roscpp
                INCLUDE_DIRS include ${soem_INCLUDE_DIRS}/soem
-               LIBRARIES ethercat_interface)
+               LIBRARIES ${PROJECT_NAME})
 
 include_directories(
   include
@@ -28,45 +28,33 @@ include_directories(
 )
 
 # find all headers for qtcreator
-file(GLOB HEADERS include/ethercat_interface/*.h src/*.h src/io_interfaces/*.h src/drivers/*.h)
+file(GLOB HEADERS include/*/*.h src/*.h src/*/*.h)
 
 # IO Interfaces
-add_library(io_interfaces
-#    src/analog_input.cpp
-#    src/analog_output.cpp
+add_library(${PROJECT_NAME}
+    ${HEADERS}
+    src/drivers/el4xxx.cpp
+    src/drivers/el5101.cpp
+    src/drivers/ethercat_driver.cpp
+    src/drivers/tuees030.cpp
     src/io_interfaces/io_interfaces.cpp
     src/io_interfaces/read_interface.cpp
     src/io_interfaces/write_interface.cpp
-)
-
-# New and improved
-add_library(ethercat_drivers
-    ${HEADERS}
-    src/drivers/ethercat_driver.cpp
-    src/drivers/el4xxx.cpp
-    src/drivers/el5101.cpp
-    src/drivers/tuees030.cpp
-)
-target_link_libraries(ethercat_drivers io_interfaces ${catkin_LIBRARIES})
-
-# New and improved
-add_library(ethercat_interface
-    ${HEADERS}
     src/ethercat_interface.cpp
 )
-target_link_libraries(ethercat_interface ethercat_drivers io_interfaces ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 # #### Test executables ####
 # Ethercat interface node
 add_executable(ethercat_interface_node test/ethercat_interface_node.cpp)
-target_link_libraries(ethercat_interface_node ethercat_interface ${catkin_LIBRARIES})
+target_link_libraries(ethercat_interface_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 # Test AO
 add_executable(test_ao test/test_ao.cpp)
-target_link_libraries(test_ao ethercat_interface ${catkin_LIBRARIES})
+target_link_libraries(test_ao ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 # Test encoder
 add_executable(test_encoder test/test_encoder.cpp)
-target_link_libraries(test_encoder ethercat_interface ${catkin_LIBRARIES})
+target_link_libraries(test_encoder ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 
