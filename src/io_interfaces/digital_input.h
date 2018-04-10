@@ -1,6 +1,9 @@
 #ifndef DIGITAL_INPUT_H
 #define DIGITAL_INPUT_H
 
+#include <ethercat_interface/ethercat_includes.h>  // For uint datatypes
+#include <ethercat_interface/read_interface.h>
+
 /**
  * @brief The DigitalInput class DigitalInput interface
  */
@@ -14,7 +17,8 @@ public:
      * physical connection which this interface represents
      * @param data_ptr pointer to the location where the data should be written
      */
-    DigitalInput(std::string name, bool *data_ptr) : data_ptr_(data_ptr), ReadInterface(name)
+    DigitalInput(std::string name, uint8 *data_ptr, unsigned int position) :
+        data_ptr_(data_ptr), ReadInterface(name), position_(position)
     {
     }
 
@@ -22,22 +26,11 @@ public:
      * @brief read reads the input value and converts it to a double
      * @return 0.0 (false) or 1.0 (true)
      */
-    double read()
-    {
-        // Read the value
-        bool bool_result = *data_ptr_;
-
-        // Convert to double
-        double double_result = static_cast<double>(bool_result);
-
-        // Print the result
-        ROS_DEBUG_THROTTLE(1.0, "Digital input: %d --> %.1f", bool_result, double_result);
-
-        return double_result;
-    }
+    double read();
 
 private:
-    bool* data_ptr_;
+    uint8* data_ptr_;
+    unsigned int position_;
 
 };  // End of class DigitalInput
 
