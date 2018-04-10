@@ -22,7 +22,7 @@ public:
 
     friend std::ostream &operator<<(std::ostream&, const IOInterface&);
 
-private:
+protected:
     std::string name_;
 
 };  // End of class IOInterface

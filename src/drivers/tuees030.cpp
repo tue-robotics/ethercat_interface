@@ -21,15 +21,15 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
     inputs_[8] = std::make_shared<AnalogInput<int16> >("Current3", &input_struct_ptr->current_3);
 
     digital_in_t* digital_in = &input_struct_ptr->digital_in;  // ToDo: check order
-    uint8* line_input_ptr = (uint8*)&digital_in->line;
-    inputs_[9] = std::make_shared<DigitalInput>("SpareDi1", line_input_ptr, 0);
-    inputs_[10] = std::make_shared<DigitalInput>("SpareDi2", line_input_ptr, 1);
-    inputs_[11] = std::make_shared<DigitalInput>("SpareDi3", line_input_ptr, 2);
-    inputs_[12] = std::make_shared<DigitalInput>("SpareDi4", line_input_ptr, 3);
-//    inputs_[13] = std::make_shared<DigitalInput>("Reserved1", line_input_ptr, 4);  // Do not expose?!
-//    inputs_[14] = std::make_shared<DigitalInput>("Reserved2", line_input_ptr, 5);  // Do not expose?!
-//    inputs_[15] = std::make_shared<DigitalInput>("Reserved3", line_input_ptr, 6);  // Do not expose?!
-    inputs_[16] = std::make_shared<DigitalInput>("PowerStatus", line_input_ptr, 7);
+    std::bitset<8>* line_input_ptr = (std::bitset<8>*)&digital_in->line;
+    inputs_[9] = std::make_shared<DigitalInput<8> >("SpareDi1", line_input_ptr, 0);
+    inputs_[10] = std::make_shared<DigitalInput<8> >("SpareDi2", line_input_ptr, 1);
+    inputs_[11] = std::make_shared<DigitalInput<8> >("SpareDi3", line_input_ptr, 2);
+    inputs_[12] = std::make_shared<DigitalInput<8> >("SpareDi4", line_input_ptr, 3);
+//    inputs_[13] = std::make_shared<DigitalInput<8> >("Reserved1", line_input_ptr, 4);  // Do not expose?!
+//    inputs_[14] = std::make_shared<DigitalInput<8> >("Reserved2", line_input_ptr, 5);  // Do not expose?!
+//    inputs_[15] = std::make_shared<DigitalInput<8> >("Reserved3", line_input_ptr, 6);  // Do not expose?!
+    inputs_[16] = std::make_shared<DigitalInput<8> >("PowerStatus", line_input_ptr, 7);
 
     //    digital_in_t digital_in;                    // digital input 8 bits [10, 11, 12, 13, 14, 15, 16, 17]
     //    uint16      calipher_1;			// calipher 1 (1 bit = 0.01 mm) [18]
@@ -86,15 +86,15 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
     // ToDo: ff3; [7]
 
     digital_out_t* digital_out = &output_struct_ptr->digital_out;  // ToDo: check order
-    uint8* line_output_ptr = (uint8*)&digital_out->line;
-    outputs_[8] = std::make_shared<DigitalOutput>("Enable1", line_output_ptr, 0);
-    outputs_[9] = std::make_shared<DigitalOutput>("Enable2", line_output_ptr, 1);
-    outputs_[10] = std::make_shared<DigitalOutput>("SpareDO3", line_output_ptr, 2);
-    outputs_[11] = std::make_shared<DigitalOutput>("SpareDO4", line_output_ptr, 3);
-//    outputs_[12] = std::make_shared<DigitalOutput>("Reserved1", line_output_ptr, 4);  // Do not expose?!
-//    outputs_[13] = std::make_shared<DigitalOutput>("Reserved2", line_output_ptr, 5);  // Do not expose?!
-//    outputs_[14] = std::make_shared<DigitalOutput>("Reserved3", line_output_ptr, 6);  // Do not expose?!
-//    outputs_[15] = std::make_shared<DigitalOutput>("Reserved4", line_output_ptr, 7);  // Do not expose?!
+    std::bitset<8>* line_output_ptr = (std::bitset<8>*)&digital_out->line;
+    outputs_[8] = std::make_shared<DigitalOutput<8> >("Enable1", line_output_ptr, 0);
+    outputs_[9] = std::make_shared<DigitalOutput<8> >("Enable2", line_output_ptr, 1);
+    outputs_[10] = std::make_shared<DigitalOutput<8> >("SpareDO3", line_output_ptr, 2);
+    outputs_[11] = std::make_shared<DigitalOutput<8> >("SpareDO4", line_output_ptr, 3);
+//    outputs_[12] = std::make_shared<DigitalOutput<8> >("Reserved1", line_output_ptr, 4);  // Do not expose?!
+//    outputs_[13] = std::make_shared<DigitalOutput<8> >("Reserved2", line_output_ptr, 5);  // Do not expose?!
+//    outputs_[14] = std::make_shared<DigitalOutput<8> >("Reserved3", line_output_ptr, 6);  // Do not expose?!
+//    outputs_[15] = std::make_shared<DigitalOutput<8> >("Reserved4", line_output_ptr, 7);  // Do not expose?!
     outputs_[16] = std::make_shared<AnalogOutput<int16> >("AnalogOut1", &output_struct_ptr->analog_out_1, 12, 0.0, 10.0, -2048);
     outputs_[17] = std::make_shared<AnalogOutput<int16> >("AnalogOut2", &output_struct_ptr->analog_out_2, 12, 0.0, 10.0, -2048);
 

@@ -1,13 +1,13 @@
 #ifndef DIGITAL_OUTPUT_H
 #define DIGITAL_OUTPUT_H
 
-#include <ros/console.h>
-#include "ethercat_interface/ethercat_includes.h"
+#include <bitset>
 #include "ethercat_interface/write_interface.h"
 
 /**
  * @brief The AnalogOutput class Interface for Analog Outputs
  */
+template<size_t _Nb>
 class DigitalOutput: public WriteInterface
 {
 public:
@@ -18,7 +18,7 @@ public:
      * physical connection which this interface represents
      * @param data_ptr pointer to the location where the data should be written
      */
-    DigitalOutput(std::string name, uint8 *data_ptr, unsigned int position) :
+    DigitalOutput(std::string name, std::bitset<_Nb> *data_ptr, unsigned int position) :
         data_ptr_(data_ptr), WriteInterface(name), position_(position)
     {}
 
@@ -27,11 +27,17 @@ public:
      * @param value value to write
      * @return bool indicating success
      */
-    bool write(double value);
+    bool write(double value)
+    {
+        // Write the value
+        (*data_ptr_)[position_] = (bool)value;
+
+        return true;
+    }
 
 private:
 
-    uint8* data_ptr_;  // ToDo: replace by bitset?
+    std::bitset<_Nb>* data_ptr_;
     unsigned int position_;
 
 };  // End of class DigitalOutput
