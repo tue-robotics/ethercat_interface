@@ -115,6 +115,21 @@ bool EthercatInterface::constructDrivers()
             ROS_INFO("Constructing EK1100 for i %i", i);
             drivers_[i-1] = std::make_shared<EK1100>(name, &ec_slave[i]);
         }
+        else if (name == "EL2002")
+        {
+            ROS_INFO("Constructing EL2002 for i %i", i);
+            drivers_[i-1] = std::make_shared<EL2002>(name, &ec_slave[i]);
+        }
+        else if (name == "EL2004")
+        {
+            ROS_INFO("Constructing EL2004 for i %i", i);
+            drivers_[i-1] = std::make_shared<EL2004>(name, &ec_slave[i]);
+        }
+        else if (name == "EL2008")
+        {
+            ROS_INFO("Constructing EL2008 for i %i", i);
+            drivers_[i-1] = std::make_shared<EL2008>(name, &ec_slave[i]);
+        }
         else if (name == "EL4132")
         {
             ROS_INFO("Constructing EL4132 for i %i", i);

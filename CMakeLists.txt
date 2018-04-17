@@ -53,8 +53,10 @@ target_link_libraries(ethercat_interface_node ${PROJECT_NAME} ${catkin_LIBRARIES
 add_executable(test_ao test/test_ao.cpp)
 target_link_libraries(test_ao ${PROJECT_NAME} ${catkin_LIBRARIES})
 
+# Test DO
+add_executable(test_do test/test_do.cpp)
+target_link_libraries(test_do ${PROJECT_NAME} ${catkin_LIBRARIES})
+
 # Test encoder
 add_executable(test_encoder test/test_encoder.cpp)
 target_link_libraries(test_encoder ${PROJECT_NAME} ${catkin_LIBRARIES})
-
-
