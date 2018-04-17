@@ -30,19 +30,8 @@ public:
      */
     bool write(double value)
     {
-        uint8* data_int_ptr;
-        data_int_ptr = (uint8*)data_ptr_;
-        ROS_WARN_STREAM("Data before:" << *data_ptr_ << ", " << *data_int_ptr);
-        ROS_WARN("%s: output (before change): %u", name_.c_str(), *data_int_ptr);
-
         // Write the value
         data_ptr_->set(position_, bool(value));
-
-        // Print debug info
-        data_int_ptr = (uint8*)data_ptr_;
-        ROS_WARN_STREAM("Raw data at " << data_ptr_ << " after:" << *data_ptr_ << ", " << *data_int_ptr);
-        ROS_WARN("%s: output (after change): %u", name_.c_str(), *data_int_ptr);
-
         return true;
     }
 

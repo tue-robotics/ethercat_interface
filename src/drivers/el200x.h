@@ -22,25 +22,14 @@ public:
      */
     EL200x(std::string name, ec_slavet *slave) : EtherCatDriver(name, slave)
     {
-        ROS_WARN("Constructing driver for %s", name.c_str());
-        ROS_WARN_STREAM("Driver memory loc:" << &slave->outputs);
-
-        ((out_el2xxxt*) (slave->outputs))->bits;
-
-//        std::bitset<8>* data_ptr = (std::bitset<8>*)&slave->outputs;  // ToDo: check
         std::bitset<8>* data_ptr = (std::bitset<8>*)&(((out_el2xxxt*) (slave->outputs))->bits);  // ToDo: check
 
         // Set everything to 1  // ToDo: is this necessary?
-//        for (size_t i = 0; i < 8; i++)
-//        {
-//            data_ptr->set(i);
-//        }
         *data_ptr = 255;
 
         for (unsigned int output_nr = 0; output_nr < _Nc; output_nr++)
         {
             ROS_DEBUG("EL200x: Getting data ptr %u", output_nr);
-            ROS_WARN("EL200x: Getting data ptr %u, startbit: %u", output_nr, slave->Ostartbit);
 
             std::string channel_name = "Digital output " + std::to_string(output_nr);
             outputs_[output_nr] = std::make_shared<DigitalOutput<8> >(channel_name, data_ptr, output_nr + slave->Ostartbit);
@@ -49,9 +38,9 @@ public:
 
 private:
     typedef struct PACKED
-        {
-          uint8 bits;
-        } out_el2xxxt;
+    {
+        uint8 bits;
+    } out_el2xxxt;
 
 };  // End of class EL200x
 
