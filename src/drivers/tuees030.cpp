@@ -16,64 +16,56 @@ class MotorCommand: public WriteInterface
 {
 public:
 
-    /**
-     * @brief MotorCommand Constructor
-     * @param name of this interface. This is convenient to indicate the
-     * physical connection which this interface represents
-     * @param data_ptr pointer to the location where the data should be written
-     * @param motor_id: identifies for which motor this command is intended (1, 2 or 3)
-     */
-    MotorCommand(std::string name, std::bitset<8> *data_ptr, unsigned int motor_id) :
-        data_ptr_(data_ptr), WriteInterface(name), position_(2)
+  /**
+   * @brief MotorCommand Constructor
+   * @param name of this interface. This is convenient to indicate the
+   * physical connection which this interface represents
+   * @param data_ptr pointer to the location where the data should be written
+   * @param motor_id: identifies for which motor this command is intended (1, 2 or 3)
+   */
+  MotorCommand(std::string name, std::bitset<8> *data_ptr, unsigned int motor_id) :
+      data_ptr_(data_ptr), WriteInterface(name), position_(2)
+  {
+    // Check input
+    if (motor_id != 1 && motor_id != 2 && motor_id != 3 )
     {
-      // Check input
-      if (motor_id != 1 && motor_id != 2 && motor_id != 3 )
-      {
-        throw std::invalid_argument("Motor id must be 1, 2 or 3");
-      }
-
-      // ToDo: make nice
-      // Set first bit
-      if (motor_id == 1 or motor_id == 3)
-      {
-        data_ptr_->set(0, true);
-      }
-      else
-      {
-        data_ptr_->set(0, false);
-      }
-
-      // Set second bit
-      if (motor_id == 3)
-      {
-        data_ptr_->set(1, true);
-      }
-      else
-      {
-        data_ptr_->set(1, false);
-      }
-
-      // Set the 'enabled' bit to false
-      data_ptr_->set(position_, false);
-
-    }  // End of constructor
-
-    /**
-     * @brief write Writes the value in the EtherCAT memory before it is send over the EtherCAT bus
-     * @param value value to write
-     * @return bool indicating success
-     */
-    bool write(double value)
-    {
-        // Write the value
-        data_ptr_->set(position_, bool(value));
-        return true;
+      throw std::invalid_argument("Motor id must be 1, 2 or 3");
     }
+
+    // Reset the data
+    data_ptr_->reset();
+
+    // ToDo: make nice (motor 1: 00, motor 2: 01, motor 3: 10)
+    // Set first bit
+    if (motor_id == 2)
+    {
+      data_ptr_->set(0, true);
+    }
+
+    // Set second bit
+    if (motor_id == 3)
+    {
+      data_ptr_->set(1, true);
+    }
+
+  }  // End of constructor
+
+  /**
+   * @brief write Writes the value in the EtherCAT memory before it is send over the EtherCAT bus
+   * @param value value to write
+   * @return bool indicating success
+   */
+  bool write(double value)
+  {
+      // Write the value
+      data_ptr_->set(position_, bool(value));
+      return true;
+  }
 
 private:
 
-    std::bitset<8>* data_ptr_;
-    unsigned int position_;
+  std::bitset<8>* data_ptr_;
+  unsigned int position_;
 
 };  // End of class MotorCommand
 
