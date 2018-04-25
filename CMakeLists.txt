@@ -57,6 +57,14 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 add_executable(ethercat_interface_node test/ethercat_interface_node.cpp)
 target_link_libraries(ethercat_interface_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 
+# List interfaces
+add_executable(list_interfaces test/list_interfaces.cpp)
+target_link_libraries(list_interfaces ${PROJECT_NAME} ${catkin_LIBRARIES})
+
+# Test AI
+add_executable(test_ai test/test_ai.cpp)
+target_link_libraries(test_ai ${PROJECT_NAME} ${catkin_LIBRARIES})
+
 # Test AO
 add_executable(test_ao test/test_ao.cpp)
 target_link_libraries(test_ao ${PROJECT_NAME} ${catkin_LIBRARIES})
