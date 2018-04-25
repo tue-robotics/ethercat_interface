@@ -1,10 +1,22 @@
 #include "./el5101.h"
 
-EL5101::EL5101(std::string name, ec_slavet *slave) : EtherCatDriver(name, slave)
+namespace ethercat_interface
 {
-    in_el5101t* input_struct_ptr = (in_el5101t*)(ec_slave_->inputs);
-    uint16_t* data_ptr = &input_struct_ptr->invalue;
-    encoder_ = std::make_shared<Encoder<uint16> >("Encoder", data_ptr);
+typedef struct PACKED
+{
+  uint8 status;
+  uint16 invalue;
+  uint16 latch;
+  uint32 frequency;
+  uint16 period;
+  uint16 window;
+} in_el5101t;
 
-    inputs_[0] = encoder_;
+EL5101::EL5101(ec_slavet* slave) : Driver(slave)
+{
+  in_el5101t* input_struct_ptr = (in_el5101t*)(slave_->inputs);
+  uint16_t* data_ptr = &input_struct_ptr->invalue;
+  inputs_[0] = std::make_shared<Encoder<uint16> >("Encoder", data_ptr);
 }
+
+}  // namespace ethercat_interface

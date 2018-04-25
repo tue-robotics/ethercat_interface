@@ -27,20 +27,28 @@ include_directories(
   ${soem_INCLUDE_DIRS}/soem
 )
 
-# find all headers for qtcreator
-file(GLOB HEADERS include/*/*.h src/*.h src/*/*.h)
-
-# IO Interfaces
+# Ethercat interface library
 add_library(${PROJECT_NAME}
     ${HEADERS}
+
+    # Driver implementations
+    src/drivers/el200x.h
     src/drivers/el4xxx.cpp
     src/drivers/el5101.cpp
-    src/drivers/ethercat_driver.cpp
     src/drivers/tuees030.cpp
-    src/io_interfaces/io_interfaces.cpp
-    src/io_interfaces/read_interface.cpp
-    src/io_interfaces/write_interface.cpp
-    src/ethercat_interface.cpp
+
+    # IO implementations
+    src/io/analog_input.h
+    src/io/analog_output.h
+    src/io/digital_input.h
+    src/io/digital_output.h
+    src/io/encoder.h
+
+    src/interface.cpp
+    src/driver.cpp
+    src/io.cpp
+    src/input.cpp
+    src/output.cpp
 )
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
