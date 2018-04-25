@@ -101,35 +101,50 @@ void Interface::constructDrivers(const std::vector<std::string> white_list)
   {
     size_t ec_slave_idx = slave_index + 1;  // why ??
     ec_slavet* slave = &ec_slave[ec_slave_idx];
+    std::string slave_name = std::string(slave->name);
 
-    ROS_INFO("Driver %zu: %s", slave_index, slave->name);
+    ROS_INFO("Found slave %zu: %s", slave_index, slave_name.c_str());
 
     // ToDo: classloader/driverfactory/pluginglib implementation
     DriverPtr driver;
-    if (slave->name == "EL2002")
+
+    if (slave_name == "EL2002")
+    {
       driver = std::make_shared<EL2002>(slave);
-    if (slave->name == "EL2004")
+    }
+    if (slave_name == "EL2004")
+    {
       driver = std::make_shared<EL2004>(slave);
-    if (slave->name == "EL2008")
+    }
+    if (slave_name == "EL2008")
+    {
       driver = std::make_shared<EL2008>(slave);
-    if (slave->name == "EL4132")
+    }
+    if (slave_name == "EL4132")
+    {
       driver = std::make_shared<EL4132>(slave);
-    if (slave->name == "EL5101")
+    }
+    if (slave_name == "EL5101")
+    {
       driver = std::make_shared<EL5101>(slave);
-    if (slave->name == "TUeES030")
+    }
+    if (slave_name == "TUeES030")
+    {
       driver = std::make_shared<TUeES030>(slave);
+    }
 
     if (driver)
     {
+      ROS_INFO("Constructed driver %s for slave with index %zu", slave_name.c_str(), slave_index);
       drivers_[slave_index] = driver;
       ROS_DEBUG_STREAM(*driver);
     }
     // If element not in white list and we did not find a valid driver
-    else if (std::find(white_list.begin(), white_list.end(), slave->name) == white_list.end())
+    else if (std::find(white_list.begin(), white_list.end(), slave_name) == white_list.end())
     {
       ROS_WARN("Could not find an imlementation for driver '%s'. Either implement the driver or add the driver name to"
                "the white list in order to suppress this warning message.",
-               slave->name);
+               slave_name.c_str());
     }
   }
 }

@@ -51,4 +51,6 @@ private:
   volatile int wkc_ = 0;  // ToDo: correct usage of volatile?
 };
 
+typedef std::shared_ptr<Interface> InterfacePtr;
+
 }  // namespace ethercat_interface

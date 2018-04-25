@@ -34,7 +34,7 @@ public:
 
   virtual const char* what() const throw()
   {
-    return std::string("Slave " + std::to_string(slave_index_) + " not present in driver list").c_str();
+    return "omg";
   }
 
   size_t slave_index_;
