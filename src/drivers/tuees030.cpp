@@ -90,10 +90,12 @@ public:
    * @param name of this interface. This is convenient to indicate the
    * physical connection which this interface represents
    * @param data_ptr pointer to the location where the data should be written
+   * @param min: mimimum value (A)
+   * @param max: maximum value (A)
    */
-  PWMOutput(std::string name, int16 *data_ptr) :
-      data_ptr_(data_ptr), min_(-6.0), max_(6.0), WriteInterface(name)
-  {}
+  PWMOutput(std::string name, int16 *data_ptr, double min, double max) :
+      data_ptr_(data_ptr), min_(min), max_(max), WriteInterface(name)
+  {write(0.0);}
 
   /**
    * @brief write Writes the value in the EtherCAT memory before it is send over the EtherCAT bus.
@@ -206,19 +208,16 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
 
     // Output channels
     out_tueEthercatMemoryt* output_struct_ptr = (out_tueEthercatMemoryt*)(ec_slave_->outputs);
-    // ToDo: pwm_duty_motor_1 [1]
     // ToDo: ff1; [2]
-    // ToDo: pwm_duty_motor_2 [4]
     // ToDo: ff2; [5]
-    // ToDo: pwm_duty_motor_3 [7]
     // ToDo: ff3; [8]
 
     outputs_[0] = std::make_shared<MotorCommand>("MotorCommand1", (std::bitset<8>*)&output_struct_ptr->mcom1, 1);
-    outputs_[1] = std::make_shared<PWMOutput>("PWMOutput1",&output_struct_ptr->pwm_duty_motor_1);
+    outputs_[1] = std::make_shared<PWMOutput>("PWMOutput1",&output_struct_ptr->pwm_duty_motor_1, -6.0, 6.0);
     outputs_[3] = std::make_shared<MotorCommand>("MotorCommand2", (std::bitset<8>*)&output_struct_ptr->mcom2, 2);
-    outputs_[4] = std::make_shared<PWMOutput>("PWMOutput2",&output_struct_ptr->pwm_duty_motor_2);
+    outputs_[4] = std::make_shared<PWMOutput>("PWMOutput2",&output_struct_ptr->pwm_duty_motor_2, -3.0, 3.0);
     outputs_[6] = std::make_shared<MotorCommand>("MotorCommand3", (std::bitset<8>*)&output_struct_ptr->mcom3, 3);
-    outputs_[7] = std::make_shared<PWMOutput>("PWMOutput3",&output_struct_ptr->pwm_duty_motor_3);
+    outputs_[7] = std::make_shared<PWMOutput>("PWMOutput3",&output_struct_ptr->pwm_duty_motor_3, -3.0, 3.0);
 
     digital_out_t* digital_out = &output_struct_ptr->digital_out;  // ToDo: check order
     std::bitset<8>* line_output_ptr = (std::bitset<8>*)&digital_out->line;
