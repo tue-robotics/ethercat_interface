@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ethercat_interface</name>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <description>The ethercat_interface package</description>
 
   <maintainer email="joost.groenen@nobleo.nl">Joost Groenen</maintainer>
@@ -10,13 +10,14 @@
 
   <!-- EtherCAT part: -->
   <author email="joost.groenen@nobleo.nl">Joost Groenen</author>
+  <author email="ferry.schoenmakers@nobleo.nl">Ferry Schoenmakers</author>
   <!-- Ros control part: -->
   <author email="tim.clephas@nobleo.nl">Tim Clephas</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>roscpp</depend>
-  <depend>ethercat_soem</depend>
+  <depend>soem</depend>
   <depend>hardware_interface</depend>
   <depend>controller_manager</depend>
 

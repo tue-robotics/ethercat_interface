@@ -6,19 +6,18 @@
 #include "ros/ros.h"
 
 #include "ethercat_interface/ethercat_includes.h"
-#include "ethercat_interface/ethercat_interface_analog.h"
+#include "ethercat_interface/ethercat_hardware.h"
 
 #include "ethercat_interface/el2008.h"
-#include "ethercat_interface/el4002.h"
+#include "ethercat_interface/el2502.h"
+#include "ethercat_interface/el5002.h"
 
-#include <hardware_interface/joint_command_interface.h>
-#include <hardware_interface/joint_state_interface.h>
-#include <hardware_interface/robot_hw.h>
-#include <controller_manager/controller_manager.h>
+#include <std_msgs/Float32.h>
+#include <std_msgs/Float64.h>
+#include <std_msgs/Bool.h>
 
 #define EC_TIMEOUTMON 500
 #define PDO_PERIOD 5000
-#define MOTORGAIN 0.334 // 1/(200/7/60*2*pi)    [V/rad/s]
 
 char IOmap[4096];
 pthread_t thread_statecheck;
@@ -29,8 +28,17 @@ volatile int wkc;
 
 boolean pdo_transfer_active = FALSE;
 
+#define PWM_PRES_MODE 1
+#define PWM_PERIOD_US 1000
+EL2502 pwmdriver(&ec_slave[2],2);
 EL2008 digitalOut(&ec_slave[3]);
-EL4002 analogOut(&ec_slave[2]);
+#define GRAYCODE 1
+#define MULTITURN 1
+#define PIVOT_ENC_RES 8192
+EL5002 pivot1(&ec_slave[4],4);
+
+ros::Publisher pivot1_pub;
+ros::Publisher pivot2_pub;
 
 boolean setup_ethercat(char* ifname)
 {
@@ -49,6 +57,12 @@ boolean setup_ethercat(char* ifname)
       ec_config_map(&IOmap);
 
       ec_configdc();
+
+      pwmdriver.write_config(PWM_PRES_MODE, PWM_PERIOD_US);
+      pivot1.write_config(GRAYCODE,MULTITURN);
+      uint8_t pres; uint16_t per;
+      pwmdriver.read_config(&pres, &per);
+      ROS_INFO("Written values %d, %d, Received values %d, %d", PWM_PRES_MODE, PWM_PERIOD_US, pres, per);
 
       ROS_INFO("Slaves mapped, state to SAFE_OP.");
       /* wait for all slaves to reach SAFE_OP state */
@@ -106,7 +120,7 @@ boolean setup_ethercat(char* ifname)
   {
     ROS_ERROR("No socket connection on %s. Try excecuting the following "
               "command: sudo setcap cap_net_raw+ep $(readlink $(catkin_find "
-              "ethercat_interface ethercat_interface_analog))\n",
+              "ethercat_interface ethercat_interface))\n",
               ifname);
   }
   return FALSE;
@@ -126,14 +140,10 @@ void stop_ethercat()
   ec_close();
 }
 
-void start_nobleobot(char* ifname)
+void start_soem(char* ifname)
 {
   /* initialise SOEM and bring to operational state*/
-  if (setup_ethercat(ifname))
-  {
-    ROS_INFO("Initialization succeeded");
-  }
-  else
+  if (!setup_ethercat(ifname))
   {
     ROS_ERROR("Initialization failed");
   }
@@ -141,7 +151,7 @@ void start_nobleobot(char* ifname)
 
 void* ecat_pdotransfer(void* ptr)
 {
-  while (1)
+  while (ros::ok())
   {
     if (pdo_transfer_active)
     {
@@ -157,7 +167,7 @@ void* ecat_statecheck(void* ptr)
   int slave;
   uint8 currentgroup = 0;
 
-  while (1)
+  while (ros::ok())
   {
     if (pdo_transfer_active &&
         ((wkc < expectedWKC) || ec_group[currentgroup].docheckstate))
@@ -230,73 +240,77 @@ void* ecat_statecheck(void* ptr)
   }
 }
 
-EthercatHardware::EthercatHardware()
+
+void readPivots()
 {
-  std::vector<std::string> joint_names;
-  joint_names.push_back("left_wheel");
-  joint_names.push_back("right_wheel");
+  uint32_t chan1,chan2;
+  double q1,q2;
 
-  for (size_t i = 0; i < joint_names.size(); ++i)
-  {
-    // connect and register the joint state interface
-    hardware_interface::JointStateHandle state_handle(joint_names[i], &pos[i], &vel[i], &eff[i]);
-    jnt_state_interface.registerHandle(state_handle);
+  chan1 = pivot1.get_input(0);
+  chan2 = pivot1.get_input(4);
 
-    registerInterface(&jnt_state_interface);
+  q1 = ((double)chan1)/PIVOT_ENC_RES*2*M_PI;
+  q2 = ((double)chan2)/PIVOT_ENC_RES*2*M_PI;
+  ROS_DEBUG("pivot1 Encs: %d %d  Rot: %g %g",chan1,chan2,q1,q2);
 
-    // connect and register the joint velocity interface
-    hardware_interface::JointHandle vel_handle(jnt_state_interface.getHandle(joint_names[i]), &cmd[i]);
-    jnt_vel_interface.registerHandle(vel_handle);
+  std_msgs::Float64 msg;
+  msg.data = q1;
+  pivot1_pub.publish(msg);
+  msg.data = q2;
+  pivot2_pub.publish(msg);
+}
 
-    registerInterface(&jnt_vel_interface);
-  }
+void readJoints()
+{
 
 }
 
-void EthercatHardware::writeJoints()
+void pwm1Callback(const std_msgs::Float32::ConstPtr& msg)
 {
-  double analog_values[2] = { cmd[0] * MOTORGAIN, cmd[1] * MOTORGAIN };
-  
-  // Sanitizing input
-  if ( std::abs(analog_values[0]) > 10)
-  {
-    ROS_WARN("Analog value [0] has a value of %f, truncating to 10",analog_values[0]);
-    analog_values[0] = std::min(10.0,std::max(-10.0,analog_values[0]));
-  }
-  if ( std::abs(analog_values[1]) > 10)
-  {
-    ROS_WARN("Analog value [1] has a value of %f, truncating to 10",analog_values[1]);
-    analog_values[1] = std::min(10.0,std::max(-10.0,analog_values[1]));
-  }
+  ROS_DEBUG("I heard: [%f]", msg->data);
+  pwmdriver.set_output(0,msg->data);
+}
 
-  // Enabling motor and writing analog values and direction boolean
-  digitalOut.set_output(3,std::abs(analog_values[0]) < 1e-5);
-  digitalOut.set_output(5,std::abs(analog_values[1]) < 1e-5);
-  digitalOut.set_output(2,analog_values[0] > 0.0); // move in the right direction
-  digitalOut.set_output(4,analog_values[1] <= 0.0);
-  analogOut.set_output(0, std::abs(analog_values[0])); // With this value
-  analogOut.set_output(1, std::abs(analog_values[1]));
-  ROS_DEBUG( "Digital = [%d, %d, %d], Analog = [%f, %f]", digitalOut.get_output(0), digitalOut.get_output(2), digitalOut.get_output(4), std::abs(analog_values[0]), std::abs(analog_values[1]) );
+void pwm2Callback(const std_msgs::Float32::ConstPtr& msg)
+{
+  ROS_DEBUG("I heard: [%f]", msg->data);
+  pwmdriver.set_output(1,msg->data);
+}
+
+void bool1Callback(const std_msgs::Bool::ConstPtr& msg)
+{
+  ROS_DEBUG("I heard: [%d]", msg->data);
+  digitalOut.set_output(0,msg->data);
+}
+
+void bool2Callback(const std_msgs::Bool::ConstPtr& msg)
+{
+  ROS_DEBUG("I heard: [%d]", msg->data);
+  digitalOut.set_output(1,msg->data);
 }
 
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ethercat_interface");
 
-  EthercatHardware robot;
-  controller_manager::ControllerManager cm(&robot);
-
   ros::AsyncSpinner spinner(1);
   spinner.start();
 
-  int freq = 30; // in Hz
+  int freq = 10; // in Hz
 
-  ros::NodeHandle nh;
+  ros::NodeHandle nh("~");
   nh.param<int>("freq", freq, freq);
   ros::Rate r(freq);
 
+  pivot1_pub = nh.advertise<std_msgs::Float64>("pivot1", 1);
+  pivot2_pub = nh.advertise<std_msgs::Float64>("pivot2", 1);
+  ros::Subscriber pwm1_sub = nh.subscribe<std_msgs::Float32>("pwm1", 1, pwm1Callback);
+  ros::Subscriber pwm2_sub = nh.subscribe<std_msgs::Float32>("pwm2", 1, pwm2Callback);
+  ros::Subscriber bool1_sub = nh.subscribe<std_msgs::Bool>("bool1", 1, bool1Callback);
+  ros::Subscriber bool2_sub = nh.subscribe<std_msgs::Bool>("bool2", 1, bool2Callback);
+
   std::string ethercat_interface;
-  if (ros::param::get("ethercat_interface", ethercat_interface))
+  if (nh.getParam("ethercat_interface", ethercat_interface))
   {
     ROS_INFO("configured interface = %s", ethercat_interface.c_str());
 
@@ -304,29 +318,19 @@ int main(int argc, char** argv)
     pthread_create(&thread_pdo, NULL, ecat_pdotransfer, (void*)&ctime);
 
     /* start cyclic part */
-
     char* interface = new char[ethercat_interface.size() + 1];
     std::copy(ethercat_interface.begin(), ethercat_interface.end(), interface);
     interface[ethercat_interface.size()] = '\0';
 
-    start_nobleobot(interface);
-
-    digitalOut.set_output(0,true); // Enable motors
+    start_soem(interface);
 
     while (ros::ok())
     {
-      ros::Time t = ros::Time::now();
-
-      // robot.readJoints();
-
-      cm.update(t, ros::Duration(1.0f / freq));
-
-      robot.writeJoints();
+      readPivots();
 
       r.sleep();
+      ros::spinOnce();
     }
-
-    digitalOut.set_output(0,false); // Disable motors
 
     ROS_INFO("stop transferring messages");
     pdo_transfer_active = FALSE;
@@ -340,6 +344,8 @@ int main(int argc, char** argv)
   }
 
   spinner.stop();
+
+  ROS_INFO("Shutdown completed");
 
   return 0;
 }
