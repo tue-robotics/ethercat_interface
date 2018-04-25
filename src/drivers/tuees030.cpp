@@ -9,6 +9,49 @@
 
 
 /**
+ * @brief The TUeES030Input class input class specific for TUeES030
+ */
+template <typename T>
+class TUeES030Input : public ReadInterface
+{
+public:
+
+  /**
+   * @brief TUeES030Input Constructor.
+   * @param name of this interface. This is convenient to indicate the
+   * physical connection which this interface represents
+   * @param data_ptr pointer to the location where the data should be written
+   * @param scale: double: the raw input value is multiplied by the scale before it is returned
+   */
+  TUeES030Input(std::string name, T *data_ptr, double scale) : data_ptr_(data_ptr), scale_(scale), ReadInterface(name) {}
+
+  /**
+   * @brief read reads the analog input
+   * @return the analog input value
+   */
+  double read()
+  {
+    // Read the integer value from the memory
+    T int_value = *data_ptr_;
+
+    // Convert to float
+    double float_value = static_cast<double>(int_value);
+
+    // Scale
+    double return_value = scale_ * float_value;
+
+    ROS_DEBUG_THROTTLE(1.0, "TUeES030Input: %.1f --> %.1f", float_value, return_value);
+
+    return return_value;
+  }
+
+private:
+  T* data_ptr_;
+  double scale_;
+
+};  // End of class TUeES030Input
+
+/**
  * @brief The MotorCommand class Interface for TUEes030 MotorCommands. This is specific
  * for the TUes030 driver
  */
@@ -87,7 +130,10 @@ public:
    */
   ES030Output(std::string name, int16 *data_ptr, double min, double max) :
       data_ptr_(data_ptr), min_(min), max_(max), WriteInterface(name)
-  {write(0.0);}
+  {
+    *data_ptr_ = 0;
+    write(0.0);
+  }
 
   /**
    * @brief write Writes the value in the EtherCAT memory before it is send over the EtherCAT bus.
@@ -130,20 +176,26 @@ private:
 
 };  // End of class AO
 
-
+/**
+ * @brief TUeES030::TUeES030 Driver for a TUeES030 Ethercat slave
+ * @param name
+ * @param slave
+ */
 TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, slave)
 {
+    double current_scale = 0.001;  // ToDo: doublecheck
+
     // Input channels
     in_tueEthercatMemoryt* input_struct_ptr = (in_tueEthercatMemoryt*)(ec_slave_->inputs);
     // ToDo: mstate1 [0]
     inputs_[1] = std::make_shared<Encoder<uint32> >("Encoder1", &input_struct_ptr->encoder_1);
-    inputs_[2] = std::make_shared<AnalogInput<int16> >("Current1", &input_struct_ptr->current_1);
+    inputs_[2] = std::make_shared<TUeES030Input<int16> >("Current1", &input_struct_ptr->current_1, current_scale);
     // ToDo: mstate2 [3]
     inputs_[4] = std::make_shared<Encoder<uint32> >("Encoder2", &input_struct_ptr->encoder_2);
-    inputs_[5] = std::make_shared<AnalogInput<int16> >("Current2", &input_struct_ptr->current_2);
+    inputs_[5] = std::make_shared<TUeES030Input<int16> >("Current2", &input_struct_ptr->current_2, current_scale);
     // ToDo: mstate3 [6]
     inputs_[7] = std::make_shared<Encoder<uint32> >("Encoder3", &input_struct_ptr->encoder_3);
-    inputs_[8] = std::make_shared<AnalogInput<int16> >("Current3", &input_struct_ptr->current_3);
+    inputs_[8] = std::make_shared<TUeES030Input<int16> >("Current3", &input_struct_ptr->current_3, current_scale);
 
     digital_in_t* digital_in = &input_struct_ptr->digital_in;  // ToDo: check order
     std::bitset<8>* line_input_ptr = (std::bitset<8>*)&digital_in->line;
@@ -167,7 +219,7 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
     inputs_[25] = std::make_shared<AnalogInput<uint16> >("Pos3", &input_struct_ptr->position_3);
     inputs_[26] = std::make_shared<AnalogInput<uint16> >("SpareAI1", &input_struct_ptr->spare_ai_1);
     inputs_[27] = std::make_shared<AnalogInput<uint16> >("SpareAI2", &input_struct_ptr->spare_ai_2);
-    inputs_[28] = std::make_shared<AnalogInput<uint16> >("Linevoltage", &input_struct_ptr->linevoltage);
+    inputs_[28] = std::make_shared<TUeES030Input<uint16> >("Linevoltage", &input_struct_ptr->linevoltage, 0.01);
 
 //    uint8       mstate1;			// motor state 1
 //    uint32      encoder_1;			// Encoder 1
@@ -200,9 +252,6 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
 
     // Output channels
     out_tueEthercatMemoryt* output_struct_ptr = (out_tueEthercatMemoryt*)(ec_slave_->outputs);
-    // ToDo: ff1; [2]
-    // ToDo: ff2; [5]
-    // ToDo: ff3; [8]
 
     double max_voltage = 24.0;  // ToDo: check with Alex (has been e-mailed), Ruud and/or Arthur
     outputs_[0] = std::make_shared<MotorCommand>("MotorCommand1", (std::bitset<8>*)&output_struct_ptr->mcom1, 1);
