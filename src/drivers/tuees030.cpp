@@ -197,6 +197,7 @@ TUeES030::TUeES030(ec_slavet* slave) : Driver(slave)
   inputs_[7] = std::make_shared<Encoder<uint32> >("Encoder3", &input_struct_ptr->encoder_3);
   inputs_[8] = std::make_shared<TUeES030Input<int16> >("Current3", &input_struct_ptr->current_3, current_scale);
 
+  // Digital inputs
   digital_in_t* digital_in = &input_struct_ptr->digital_in;  // ToDo: check order
   std::bitset<8>* line_input_ptr = (std::bitset<8>*)&digital_in->line;
   inputs_[9] = std::make_shared<DigitalInput<8> >("SpareDi1", line_input_ptr, 0);
@@ -208,12 +209,17 @@ TUeES030::TUeES030(ec_slavet* slave) : Driver(slave)
   //    inputs_[15] = std::make_shared<DigitalInput<8> >("Reserved3", line_input_ptr, 6);  // Do not expose?!
   inputs_[16] = std::make_shared<DigitalInput<8> >("PowerStatus", line_input_ptr, 7);
 
-  //    digital_in_t digital_in;                    // digital input 8 bits [10, 11, 12, 13, 14, 15, 16, 17]
-  //    uint16      calipher_1;			// calipher 1 (1 bit = 0.01 mm) [18]
-  //    uint16      calipher_2;			// calipher 2 (1 bit = 0.01 mm) [19]
+  // Caliphers
+  double calipher_scale = 0.01 * 0.001;  // 0.01 mm/bit * 0.001 m / mm
+  inputs_[18] = std::make_shared<TUeES030Input<uint16> >("Calipher1", &input_struct_ptr->calipher_1, calipher_scale);
+  inputs_[19] = std::make_shared<TUeES030Input<uint16> >("Calipher2", &input_struct_ptr->calipher_2, calipher_scale);
+
+  // Force inputs
   inputs_[20] = std::make_shared<AnalogInput<uint16> >("Force1", &input_struct_ptr->force_1);
   inputs_[21] = std::make_shared<AnalogInput<uint16> >("Force2", &input_struct_ptr->force_2);
   inputs_[22] = std::make_shared<AnalogInput<uint16> >("Force3", &input_struct_ptr->force_3);
+
+  // Position inputs
   inputs_[23] = std::make_shared<AnalogInput<uint16> >("Pos1", &input_struct_ptr->position_1);
   inputs_[24] = std::make_shared<AnalogInput<uint16> >("Pos2", &input_struct_ptr->position_2);
   inputs_[25] = std::make_shared<AnalogInput<uint16> >("Pos3", &input_struct_ptr->position_3);
