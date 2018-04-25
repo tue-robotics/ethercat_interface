@@ -145,12 +145,12 @@ public:
     // Check/clip input
     if (value > max_)
     {
-      ROS_WARN("%s value %.2f exceeds maximum %.2f, clipping", name_.c_str(), value, max_);
+      ROS_WARN_THROTTLE(1.0, "%s value %.2f exceeds maximum %.2f, clipping", name_.c_str(), value, max_);
       value = max_;
     }
     else if (value < min_)
     {
-      ROS_WARN("%s value %.2f exceeds minimum %.2f, clipping", name_.c_str(), value, min_);
+      ROS_WARN_THROTTLE(1.0, "%s value %.2f exceeds minimum %.2f, clipping", name_.c_str(), value, min_);
       value = min_;
     }
 
