@@ -79,27 +79,27 @@ private:
 
 
 /**
- * @brief The PWMOutput class Interface for PWM Outputs for the TUeES030. This converts
- * the input differently than a AnalogOutput
+ * @brief The ES030Output class Interface for Outputs for the TUeES030. This converts
+ * the input differently than a AnalogOutput, i.e., by representing each mV or mA as a bit
  */
-class PWMOutput: public WriteInterface
+class ES030Output: public WriteInterface
 {
 public:
   /**
-   * @brief PWMOutput Constructor
+   * @brief ES030Output Constructor
    * @param name of this interface. This is convenient to indicate the
    * physical connection which this interface represents
    * @param data_ptr pointer to the location where the data should be written
-   * @param min: mimimum value (A)
-   * @param max: maximum value (A)
+   * @param min: mimimum value (V or A)
+   * @param max: maximum value (V or A)
    */
-  PWMOutput(std::string name, int16 *data_ptr, double min, double max) :
+  ES030Output(std::string name, int16 *data_ptr, double min, double max) :
       data_ptr_(data_ptr), min_(min), max_(max), WriteInterface(name)
   {write(0.0);}
 
   /**
    * @brief write Writes the value in the EtherCAT memory before it is send over the EtherCAT bus.
-   * @param value value to write in Amps
+   * @param value value to write in V or A
    * @return bool indicating success
    */
   bool write(double value)
@@ -123,7 +123,7 @@ public:
     int i_value = static_cast<int>(m_value);
 
     // Debug info
-    ROS_DEBUG_THROTTLE(1.0, "%s: Writing %.2f A, %f mA, %i bits", name_.c_str(), value, m_value, i_value);
+    ROS_DEBUG_THROTTLE(1.0, "%s: Writing %.2f [V or A], %f [mV or mA], %i bits", name_.c_str(), value, m_value, i_value);
 
     // Write the value to the designated memory location
     *data_ptr_ = i_value;
@@ -213,11 +213,11 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
     // ToDo: ff3; [8]
 
     outputs_[0] = std::make_shared<MotorCommand>("MotorCommand1", (std::bitset<8>*)&output_struct_ptr->mcom1, 1);
-    outputs_[1] = std::make_shared<PWMOutput>("PWMOutput1",&output_struct_ptr->pwm_duty_motor_1, -6.0, 6.0);
+    outputs_[1] = std::make_shared<ES030Output>("PWMOutput1",&output_struct_ptr->pwm_duty_motor_1, -6.0, 6.0);
     outputs_[3] = std::make_shared<MotorCommand>("MotorCommand2", (std::bitset<8>*)&output_struct_ptr->mcom2, 2);
-    outputs_[4] = std::make_shared<PWMOutput>("PWMOutput2",&output_struct_ptr->pwm_duty_motor_2, -3.0, 3.0);
+    outputs_[4] = std::make_shared<ES030Output>("PWMOutput2",&output_struct_ptr->pwm_duty_motor_2, -3.0, 3.0);
     outputs_[6] = std::make_shared<MotorCommand>("MotorCommand3", (std::bitset<8>*)&output_struct_ptr->mcom3, 3);
-    outputs_[7] = std::make_shared<PWMOutput>("PWMOutput3",&output_struct_ptr->pwm_duty_motor_3, -3.0, 3.0);
+    outputs_[7] = std::make_shared<ES030Output>("PWMOutput3",&output_struct_ptr->pwm_duty_motor_3, -3.0, 3.0);
 
     digital_out_t* digital_out = &output_struct_ptr->digital_out;  // ToDo: check order
     std::bitset<8>* line_output_ptr = (std::bitset<8>*)&digital_out->line;
