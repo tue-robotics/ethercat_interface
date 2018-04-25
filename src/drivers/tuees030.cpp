@@ -145,12 +145,12 @@ public:
     // Check/clip input
     if (value > max_)
     {
-      ROS_WARN("%s value %.2f exceeds maximum %.2f, clipping", name_.c_str(), value, max_);
+      ROS_WARN_THROTTLE(1.0, "%s value %.2f exceeds maximum %.2f, clipping", name_.c_str(), value, max_);
       value = max_;
     }
     else if (value < min_)
     {
-      ROS_WARN("%s value %.2f exceeds minimum %.2f, clipping", name_.c_str(), value, min_);
+      ROS_WARN_THROTTLE(1.0, "%s value %.2f exceeds minimum %.2f, clipping", name_.c_str(), value, min_);
       value = min_;
     }
 
@@ -215,7 +215,7 @@ TUeES030::TUeES030(ec_slavet* slave) : Driver(slave)
   inputs_[19] = std::make_shared<TUeES030Input<uint16> >("Calipher2", &input_struct_ptr->calipher_2, calipher_scale);
 
   // Force inputs
-  double ai_conversion_scale = 4095.0 / 3.3;
+  double ai_conversion_scale = 3.3 / 4095.0;
   inputs_[20] = std::make_shared<TUeES030Input<uint16> >("Force1", &input_struct_ptr->force_1, ai_conversion_scale);
   inputs_[21] = std::make_shared<TUeES030Input<uint16> >("Force2", &input_struct_ptr->force_2, ai_conversion_scale);
   inputs_[22] = std::make_shared<TUeES030Input<uint16> >("Force3", &input_struct_ptr->force_3, ai_conversion_scale);
