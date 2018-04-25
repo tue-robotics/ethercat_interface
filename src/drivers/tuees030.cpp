@@ -204,12 +204,16 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
     // ToDo: ff2; [5]
     // ToDo: ff3; [8]
 
+    double max_voltage = 24.0;  // ToDo: check with Alex (has been e-mailed), Ruud and/or Arthur
     outputs_[0] = std::make_shared<MotorCommand>("MotorCommand1", (std::bitset<8>*)&output_struct_ptr->mcom1, 1);
     outputs_[1] = std::make_shared<ES030Output>("PWMOutput1",&output_struct_ptr->pwm_duty_motor_1, -6.0, 6.0);
+    outputs_[2] = std::make_shared<ES030Output>("FF1",&output_struct_ptr->ff1, -max_voltage, max_voltage);
     outputs_[3] = std::make_shared<MotorCommand>("MotorCommand2", (std::bitset<8>*)&output_struct_ptr->mcom2, 2);
     outputs_[4] = std::make_shared<ES030Output>("PWMOutput2",&output_struct_ptr->pwm_duty_motor_2, -3.0, 3.0);
+    outputs_[5] = std::make_shared<ES030Output>("FF2",&output_struct_ptr->ff2, -max_voltage, max_voltage);
     outputs_[6] = std::make_shared<MotorCommand>("MotorCommand3", (std::bitset<8>*)&output_struct_ptr->mcom3, 3);
     outputs_[7] = std::make_shared<ES030Output>("PWMOutput3",&output_struct_ptr->pwm_duty_motor_3, -3.0, 3.0);
+    outputs_[8] = std::make_shared<ES030Output>("FF3",&output_struct_ptr->ff3, -max_voltage, max_voltage);
 
     digital_out_t* digital_out = &output_struct_ptr->digital_out;  // ToDo: check order
     std::bitset<8>* line_output_ptr = (std::bitset<8>*)&digital_out->line;
