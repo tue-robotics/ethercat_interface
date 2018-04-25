@@ -78,6 +78,65 @@ private:
 };  // End of class MotorCommand
 
 
+/**
+ * @brief The PWMOutput class Interface for PWM Outputs for the TUeES030. This converts
+ * the input differently than a AnalogOutput
+ */
+class PWMOutput: public WriteInterface
+{
+public:
+  /**
+   * @brief PWMOutput Constructor
+   * @param name of this interface. This is convenient to indicate the
+   * physical connection which this interface represents
+   * @param data_ptr pointer to the location where the data should be written
+   */
+  PWMOutput(std::string name, int16 *data_ptr) :
+      data_ptr_(data_ptr), min_(-6.0), max_(6.0), WriteInterface(name)
+  {}
+
+  /**
+   * @brief write Writes the value in the EtherCAT memory before it is send over the EtherCAT bus.
+   * @param value value to write in Amps
+   * @return bool indicating success
+   */
+  bool write(double value)
+  {
+    // Check/clip input
+    if (value > max_)
+    {
+      ROS_WARN("%s value %.2f exceeds maximum %.2f, clipping", name_.c_str(), value, max_);
+      value = max_;
+    }
+    else if (value < min_)
+    {
+      ROS_WARN("%s value %.2f exceeds minimum %.2f, clipping", name_.c_str(), value, min_);
+      value = min_;
+    }
+
+    // Convert to mA
+    double m_value = 1000.0 * value;
+
+    // Convert to integer
+    int i_value = static_cast<int>(m_value);
+
+    // Debug info
+    ROS_DEBUG_THROTTLE(1.0, "%s: Writing %.2f A, %f mA, %i bits", name_.c_str(), value, m_value, i_value);
+
+    // Write the value to the designated memory location
+    *data_ptr_ = i_value;
+
+    return true;
+  }
+
+private:
+
+  int16* data_ptr_;
+  double min_, max_;
+
+};  // End of class AO
+
+
 TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, slave)
 {
     // Input channels
@@ -155,8 +214,11 @@ TUeES030::TUeES030(std::string name, ec_slavet *slave) : EtherCatDriver(name, sl
     // ToDo: ff3; [8]
 
     outputs_[0] = std::make_shared<MotorCommand>("MotorCommand1", (std::bitset<8>*)&output_struct_ptr->mcom1, 1);
+    outputs_[1] = std::make_shared<PWMOutput>("PWMOutput1",&output_struct_ptr->pwm_duty_motor_1);
     outputs_[3] = std::make_shared<MotorCommand>("MotorCommand2", (std::bitset<8>*)&output_struct_ptr->mcom2, 2);
+    outputs_[4] = std::make_shared<PWMOutput>("PWMOutput2",&output_struct_ptr->pwm_duty_motor_2);
     outputs_[6] = std::make_shared<MotorCommand>("MotorCommand3", (std::bitset<8>*)&output_struct_ptr->mcom3, 3);
+    outputs_[7] = std::make_shared<PWMOutput>("PWMOutput3",&output_struct_ptr->pwm_duty_motor_3);
 
     digital_out_t* digital_out = &output_struct_ptr->digital_out;  // ToDo: check order
     std::bitset<8>* line_output_ptr = (std::bitset<8>*)&digital_out->line;
