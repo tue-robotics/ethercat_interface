@@ -11,9 +11,9 @@
 
 namespace ethercat_interface
 {
-Interface::Interface(const std::string& interface_name, const std::vector<std::string> white_list)
+Interface::Interface(const std::string& interface_name, const std::vector<std::string>& white_list)
 {
-  // Initialise SOEM, bind socket to ifname
+  // Initialise SOEM, bind socket to interface_name
   // Use const_cast here because we have an old c interface
   if (!ec_init(const_cast<char*>(interface_name.c_str())))
   {
@@ -28,8 +28,7 @@ Interface::Interface(const std::string& interface_name, const std::vector<std::s
   }
   ROS_INFO("%d slaves found and configured.", ec_slavecount);
 
-  char io_map[4096];
-  ec_config_map(&io_map);
+  ec_config_map(&IOmap_);
   ec_configdc();
   ROS_INFO("Slaves mapped, state to SAFE_OP.");
 
@@ -39,9 +38,8 @@ Interface::Interface(const std::string& interface_name, const std::vector<std::s
            ec_group[0].IOsegment[2], ec_group[0].IOsegment[3]);
 
   ROS_INFO("Request operational state for all slaves");
-  int expected_wkc = 0;
-  expected_wkc = (ec_group[0].outputsWKC * 2) + ec_group[0].inputsWKC;
-  ROS_INFO("Calculated workcounter %d", expected_wkc);
+  expected_wkc_ = (ec_group[0].outputsWKC * 2) + ec_group[0].inputsWKC;
+  ROS_INFO("Calculated workcounter %d", expected_wkc_);
   ec_slave[0].state = EC_STATE_OPERATIONAL;
 
   // Send one valid process data to make outputs in slaves happy
@@ -95,7 +93,7 @@ Interface::~Interface()
   ec_close();
 }
 
-void Interface::constructDrivers(const std::vector<std::string> white_list)
+void Interface::constructDrivers(const std::vector<std::string>& white_list)
 {
   for (size_t slave_index = 0; slave_index < ec_slavecount; slave_index++)
   {
@@ -184,5 +182,4 @@ void Interface::write()
     throw WriteException();
   }
 }
-
 }  // namespace ethercat_interface

@@ -14,7 +14,7 @@ public:
   /**
    * @brief EthercatInterface: constructor
    */
-  Interface(const std::string& interface_name, const std::vector<std::string> white_list = { "EK1100", "TUeEC010" });
+  Interface(const std::string& interface_name, const std::vector<std::string>& white_list = { "EK1100", "TUeEC010" });
 
   /**
    * @brief ~EthercatInterface: destructor
@@ -36,7 +36,7 @@ public:
   void read();
 
   /**
-   * @brief write Writes all data over to the Ethernet device
+   * @brief write Sends all data over to the Ethernet device
    */
   void write();
 
@@ -44,13 +44,15 @@ private:
   /**
    * @brief constructDrivers Constructs the driver for each slave
    */
-  void constructDrivers(const std::vector<std::string> white_list);
+  void constructDrivers(const std::vector<std::string>& white_list);
 
-  std::map<size_t, DriverPtr> drivers_;
+private:
+  std::map<size_t, std::shared_ptr<Driver> > drivers_;
   bool pdo_transfer_active_ = false;
-  volatile int wkc_ = 0;  // ToDo: correct usage of volatile?
+  volatile int wkc_ = 0;
+  volatile int expected_wkc_ = 0;  // ToDo: correct usage of volatile?
+  char IOmap_[4096];
 };
 
 typedef std::shared_ptr<Interface> InterfacePtr;
-
 }  // namespace ethercat_interface
