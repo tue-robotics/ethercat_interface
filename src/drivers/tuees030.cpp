@@ -215,16 +215,19 @@ TUeES030::TUeES030(ec_slavet* slave) : Driver(slave)
   inputs_[19] = std::make_shared<TUeES030Input<uint16> >("Calipher2", &input_struct_ptr->calipher_2, calipher_scale);
 
   // Force inputs
-  inputs_[20] = std::make_shared<AnalogInput<uint16> >("Force1", &input_struct_ptr->force_1);
-  inputs_[21] = std::make_shared<AnalogInput<uint16> >("Force2", &input_struct_ptr->force_2);
-  inputs_[22] = std::make_shared<AnalogInput<uint16> >("Force3", &input_struct_ptr->force_3);
+  double ai_conversion_scale = 4095.0/3.3;
+  inputs_[20] = std::make_shared<TUeES030Input<uint16> >("Force1", &input_struct_ptr->force_1, ai_conversion_scale);
+  inputs_[21] = std::make_shared<TUeES030Input<uint16> >("Force2", &input_struct_ptr->force_2, ai_conversion_scale);
+  inputs_[22] = std::make_shared<TUeES030Input<uint16> >("Force3", &input_struct_ptr->force_3, ai_conversion_scale);
 
   // Position inputs
-  inputs_[23] = std::make_shared<AnalogInput<uint16> >("Pos1", &input_struct_ptr->position_1);
-  inputs_[24] = std::make_shared<AnalogInput<uint16> >("Pos2", &input_struct_ptr->position_2);
-  inputs_[25] = std::make_shared<AnalogInput<uint16> >("Pos3", &input_struct_ptr->position_3);
-  inputs_[26] = std::make_shared<AnalogInput<uint16> >("SpareAI1", &input_struct_ptr->spare_ai_1);
-  inputs_[27] = std::make_shared<AnalogInput<uint16> >("SpareAI2", &input_struct_ptr->spare_ai_2);
+  inputs_[23] = std::make_shared<TUeES030Input<uint16> >("Pos1", &input_struct_ptr->position_1, ai_conversion_scale);
+  inputs_[24] = std::make_shared<TUeES030Input<uint16> >("Pos2", &input_struct_ptr->position_2, ai_conversion_scale);
+  inputs_[25] = std::make_shared<TUeES030Input<uint16> >("Pos3", &input_struct_ptr->position_3, ai_conversion_scale);
+
+  // Spare inputs
+  inputs_[26] = std::make_shared<AnalogInput<uint16> >("SpareAI1", &input_struct_ptr->spare_ai_1);  // ToDo: other conversion?
+  inputs_[27] = std::make_shared<AnalogInput<uint16> >("SpareAI2", &input_struct_ptr->spare_ai_2);  // ToDo: other conversion?
   inputs_[28] = std::make_shared<TUeES030Input<uint16> >("Linevoltage", &input_struct_ptr->linevoltage, 0.01);
 
   //    uint8       mstate1;			// motor state 1
