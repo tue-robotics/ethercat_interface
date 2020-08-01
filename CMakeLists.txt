@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 
 ## Use C++ 11
-set (CMAKE_CXX_STANDARD 11)
+add_compile_options(-std=c++11)
 
 project(ethercat_interface)
 
@@ -14,17 +14,12 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## Declare a catkin package
 catkin_package(CATKIN_DEPENDS roscpp
-               INCLUDE_DIRS include ${soem_INCLUDE_DIRS}/soem
+               INCLUDE_DIRS include
                LIBRARIES ${PROJECT_NAME})
 
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
-  ## The following work around allows SOEM headers to include other SOEM headers.
-  ## SOEM headers assume all headers are installed in a flat directory structure
-  ## See https://github.com/smits/soem/issues/4 for more information.
-  ## Thanks: https://github.com/ros-industrial/robotiq/blob/a2a77e73370c522fa9865f7a797408ef7831026e/robotiq_ethercat/CMakeLists.txt#L15
-  ${soem_INCLUDE_DIRS}/soem
 )
 
 # Ethercat interface library
