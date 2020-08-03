@@ -8,9 +8,10 @@ project(ethercat_interface)
 ## Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  soem
   hardware_interface
   controller_manager)
+
+find_package(soem REQUIRED)
 
 ## Declare a catkin package
 catkin_package(CATKIN_DEPENDS roscpp
@@ -20,6 +21,7 @@ catkin_package(CATKIN_DEPENDS roscpp
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${soem_INCLUDE_DIRS}
 )
 
 # Ethercat interface library
