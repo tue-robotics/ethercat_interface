@@ -46,7 +46,6 @@ add_library(${PROJECT_NAME}
     src/output.cpp
 )
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
-add_dependencies(${PROJECT_NAME} soem)
 
 # #### Test executables ####
 # Ethercat interface node
